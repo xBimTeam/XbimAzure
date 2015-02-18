@@ -1,0 +1,54 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2013
+VisualStudioVersion = 12.0.31101.0
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "XbimModelPortal", "XbimModelPortal\XbimModelPortal.csproj", "{0499558E-F6B8-4388-8AFC-7939CB05B1B2}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "PublishScripts", "PublishScripts", "{C81A6915-BADE-4C69-A658-EA11A027E5B2}"
+	ProjectSection(SolutionItems) = preProject
+		PublishScripts\AzureWebsitePublishModule.psm1 = PublishScripts\AzureWebsitePublishModule.psm1
+		PublishScripts\Publish-WebApplicationWebsite.ps1 = PublishScripts\Publish-WebApplicationWebsite.ps1
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Configurations", "Configurations", "{011972CB-FB12-4295-88D0-84768C239944}"
+	ProjectSection(SolutionItems) = preProject
+		PublishScripts\Configurations\XbimModelPortal-WAWS-dev.json = PublishScripts\Configurations\XbimModelPortal-WAWS-dev.json
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "XbimCloudCommon", "XbimCloudCommon\XbimCloudCommon.csproj", "{F2851CFF-A572-4F0A-855B-D8B828A4ED2A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "XbimModelPortalWebJob", "XbimModelPortalWebJob\XbimModelPortalWebJob.csproj", "{C4B98DDB-CDA6-49E0-9608-3570B65ADF24}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "XbimModelPortalCleanUp", "XbimModelPortalCleanUp\XbimModelPortalCleanUp.csproj", "{D585BF92-5D5F-40AA-B5B7-9C1227BC7467}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{0499558E-F6B8-4388-8AFC-7939CB05B1B2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0499558E-F6B8-4388-8AFC-7939CB05B1B2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0499558E-F6B8-4388-8AFC-7939CB05B1B2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0499558E-F6B8-4388-8AFC-7939CB05B1B2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F2851CFF-A572-4F0A-855B-D8B828A4ED2A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F2851CFF-A572-4F0A-855B-D8B828A4ED2A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F2851CFF-A572-4F0A-855B-D8B828A4ED2A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F2851CFF-A572-4F0A-855B-D8B828A4ED2A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C4B98DDB-CDA6-49E0-9608-3570B65ADF24}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C4B98DDB-CDA6-49E0-9608-3570B65ADF24}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C4B98DDB-CDA6-49E0-9608-3570B65ADF24}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C4B98DDB-CDA6-49E0-9608-3570B65ADF24}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D585BF92-5D5F-40AA-B5B7-9C1227BC7467}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D585BF92-5D5F-40AA-B5B7-9C1227BC7467}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D585BF92-5D5F-40AA-B5B7-9C1227BC7467}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D585BF92-5D5F-40AA-B5B7-9C1227BC7467}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{011972CB-FB12-4295-88D0-84768C239944} = {C81A6915-BADE-4C69-A658-EA11A027E5B2}
+	EndGlobalSection
+EndGlobal

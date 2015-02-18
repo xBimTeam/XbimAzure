@@ -1,0 +1,153 @@
+﻿
+@{
+    Layout = null;
+}
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title></title>
+    <link href="~/Content/jquery-ui-styles/jquery-ui.css" rel="stylesheet" />
+    <link href="~/Content/xbrowser-styles.css" rel="stylesheet" />
+
+    <script src="~/bundles/jquery"></script>
+    <script src="~/bundles/jqueryui"></script>
+    @*<script src="~/bundles/xviewer"></script>*@
+
+    <script src="~/Scripts/xbim-viewer.debug.bundle.js"></script>
+    <script src="~/Scripts/xbim-browser.js"></script>
+    <script src="~/Scripts/main.js"></script>
+
+</head>
+<body>
+    <div id="viewer-container">
+        <canvas id="viewer-canvas"></canvas>
+    </div>
+    <div id="semantic-model-container" class="noselect">
+        <div id="semantic-tabs">
+            <ul>
+                <li><a href="#semantic-model-tab">Delivered</a></li>
+                <li><a href="#requirements-tab">Required</a></li>
+            </ul>
+            <div id="requirements-tab">
+                <div id="requirements">
+                    <h3>Spatial structure</h3>
+                    <div class="no-overflow">
+                        <div id="r-structure" class="semantic-model-tree"></div>
+                    </div>
+                    <h3>Asset types</h3>
+                    <div class="no-overflow">
+                        <div id="r-assetTypes" class="semantic-model-tree"></div>
+                    </div>
+                    <h3>Systems</h3>
+                    <div class="no-overflow">
+                        <div id="r-systems" class="semantic-model-tree"></div>
+                    </div>
+                    <h3>Zones</h3>
+                    <div class="no-overflow">
+                        <div id="r-zones" class="semantic-model-tree"></div>
+                    </div>
+                    <h3>Contacts</h3>
+                    <div class="no-overflow">
+                        <div id="r-contacts" class="semantic-model-tree"></div>
+                    </div>
+                    <h3>Documents</h3>
+                    <div class="no-overflow">
+                        <div id="r-facility-documents" class="semantic-model-tree"></div>
+                    </div>
+                </div>
+            </div>
+            <div id="semantic-model-tab">
+                <div id="semantic-model">
+                    <h3>Spatial structure</h3>
+                    <div class="no-overflow">
+                        <div id="structure" class="semantic-model-tree"></div>
+                    </div>
+                    <h3>Asset types</h3>
+                    <div class="no-overflow">
+                        <div id="assetTypes" class="semantic-model-tree"></div>
+                    </div>
+                    <h3>Systems</h3>
+                    <div class="no-overflow">
+                        <div id="systems" class="semantic-model-tree"></div>
+                    </div>
+                    <h3>Zones</h3>
+                    <div class="no-overflow">
+                        <div id="zones" class="semantic-model-tree"></div>
+                    </div>
+                    <h3>Contacts</h3>
+                    <div class="no-overflow">
+                        <div id="contacts" class="semantic-model-tree"></div>
+                    </div>
+                    <h3>Documents</h3>
+                    <div class="no-overflow">
+                        <div id="facility-documents" class="semantic-model-tree"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="semantic-descriptive-info-container">
+        <div id="semantic-descriptive-info">
+            <h3 id="attrprop-header">Properties and attributes </h3>
+            <div class="no-overflow-y">
+                <div id="attrprop"></div>
+            </div>
+            <h3>Documents</h3>
+            <div class="no-overflow">
+                <div id="documents"></div>
+            </div>
+            <h3>Tasks</h3>
+            <div class="no-overflow">
+                <div id="issues"></div>
+            </div>
+            <h3>Assignments</h3>
+            <div class="no-overflow">
+                <div id="assignments"></div>
+            </div>
+        </div>
+    </div>
+    <span class="right" id="btnLocate"><span class="ui-icon ui-icon-pin-s left"></span> Locate</span>
+
+    <!-- ui-dialog -->
+    <div id="overlay">
+        <div class="ui-widget-overlay"></div>
+        <img src="~/Content/loader.gif" title="loader" alt="loader" style="width:150px; height:150px; position:absolute; left:50%; top: 50%; margin: -75px 0 0 -75px; padding:0;" />
+        <div id="overlay-shadow"
+             class="ui-widget-shadow ui-corner-all"
+             style="width: 602px; height: 402px; position: absolute; left: 50%; top: 50%; margin: -201px 0 0 -301px; padding:0"></div>
+        <div id="dialog-container"
+             style="width: 550px; height: 350px; position: absolute; left: 50%; top: 50%; margin: -175px 0 0 -275px; padding:0;"
+             class="ui-widget ui-widget-content ui-corner-all">
+            <div class="ui-dialog-content ui-widget-content" style="background: none; border: 0;">
+                <div id="dialog-content" style="padding:25px;">
+                    <div id="files-upload-dialog" class="xbim-dialog">
+                        <h1>Files upload</h1>
+                        <p>
+                            Select your IFC file to be uploaded and requirements file to be checked.
+                        </p>
+                        <form class="ui-corner-all" id="ifc-file-form">
+                            <input type="file" id="ifcFileInput" style="display:none;" accept=".ifc,.ifcxml,.ifczip" />
+                            <span class="xbim-button" id="ifcButton">Select IFC file</span> <span id="ifcName" class="xbim-file-name ui-corner-all">No file selected...</span>
+                        </form>
+                        <form class="ui-corner-all">
+                            <input type="file" id="rqFileInput" style="display:none" />
+                            <span class="xbim-button" id="rqButton">Select requirements file</span> <span id="rqName" class="xbim-file-name ui-corner-all">No file selected...</span>
+                        </form>
+                        <span class="xbim-button" id="uploadButton">Upload</span>
+                    </div>
+                    <div id="error-dialog" class="xbim-dialog" style="display:none;">
+                        <h1 id="error-dialog-header"></h1>
+                        <p id="error-dialog-content">
+
+                        </p>
+                        <span id="errOkButton" class="xbim-button">OK</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+</body>
+</html>
+

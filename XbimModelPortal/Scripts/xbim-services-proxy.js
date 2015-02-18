@@ -1,0 +1,5 @@
+﻿function xServices() {
+    this.urls = {
+
+    };
+}
