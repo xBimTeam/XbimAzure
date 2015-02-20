@@ -184,6 +184,8 @@
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
     <Content Include="Data\LakesideRestaurantSpec.json" />
+    <Content Include="Data\LakesideRestaurant.json" />
+    <Content Include="Data\LakesideRestaurant.wexbim" />
     <None Include="Properties\PublishProfiles\openbim.pubxml" />
     <Content Include="Properties\webjobs-list.json" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
@@ -262,7 +264,7 @@
     <VisualStudio>
       <FlavorProperties GUID="{349c5851-65df-11da-9384-00065b846f21}">
         <WebProjectProperties>
-          <UseIIS>True</UseIIS>
+          <UseIIS>False</UseIIS>
           <AutoAssignPort>True</AutoAssignPort>
           <DevelopmentServerPort>60412</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
