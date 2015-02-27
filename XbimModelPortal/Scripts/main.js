@@ -24,47 +24,47 @@
 
     function initControls() {
 
-        $('#semantic-descriptive-info').accordion({
-            heightStyle: 'fill'
+        $("#semantic-descriptive-info").accordion({
+            heightStyle: "fill"
         });
 
-        $('#semantic-tabs').tabs({
+        $("#semantic-tabs").tabs({
             activate: function (event, ui) {
                 reinitControls();
             },
             create: function (event, ui) {
-                $('#semantic-model').accordion({
-                    heightStyle: 'fill'
+                $("#semantic-model").accordion({
+                    heightStyle: "fill"
                 });
-                $('#requirements').accordion({
-                    heightStyle: 'fill'
+                $("#requirements").accordion({
+                    heightStyle: "fill"
                 });
             }
         });
 
-        $('#btnLocate').button().click(function () {
-            var id = $(this).data('id');
-            if (typeof (id) != 'undefined' && viewer) {
+        $("#btnLocate").button().click(function () {
+            var id = $(this).data("id");
+            if (typeof (id) != "undefined" && viewer) {
                 viewer.zoomTo(parseInt(id));
             }
         });
 
-        $('.xbim-button').button();
+        $(".xbim-button").button();
 
         //init overlayed file input buttons
-        $('#ifcButton').on('click', function () { 
-            $('#ifcFileInput').click();
+        $("#ifcButton").on("click", function () { 
+            $("#ifcFileInput").click();
             return false;
         });
-        $('#ifcFileInput').on('change', function () {
-            $('#ifcName').html($(this).val().split(/(\\|\/)/g).pop());
+        $("#ifcFileInput").on("change", function () {
+            $("#ifcName").html($(this).val().split(/(\\|\/)/g).pop());
         });
-        $('#rqButton').on('click', function () {
-            $('#rqFileInput').click();
+        $("#rqButton").on("click", function () {
+            $("#rqFileInput").click();
             return false;
         });
-        $('#rqFileInput').on('change', function () {
-            $('#rqName').html($(this).val().split(/(\\|\/)/g).pop());
+        $("#rqFileInput").on("change", function () {
+            $("#rqName").html($(this).val().split(/(\\|\/)/g).pop());
         });
 
     }
@@ -72,10 +72,10 @@
     var afterDialog = null;
     function showError(header, message, idAfter) {
         afterDialog = idAfter;
-        $('.xbim-dialog').hide();
-        $('#error-dialog-header').html(header);
-        $('#error-dialog-content').html(message);
-        $('#error-dialog').show();
+        $(".xbim-dialog").hide();
+        $("#error-dialog-header").html(header);
+        $("#error-dialog-content").html(message);
+        $("#error-dialog").show();
     }
     $("#errOkButton").on("click", function () {
         $(".xbim-dialog").hide();
@@ -88,7 +88,7 @@
         xmlhttp.onreadystatechange = function () {
             if (xmlhttp.readyState === 4 && xmlhttp.status === 200) {
                 var data = JSON.parse(xmlhttp.responseText);
-                if (data.State === 'READY')
+                if (data.State === "READY")
                     callback(model);
                 else 
                     setTimeout(function () { whenReady(model, callback) }, 1000);
@@ -98,14 +98,14 @@
     }
 
     //load button - validate input files (extensions at least), upload files, wait for results, load browsers and the viewer
-    $('#uploadButton').on('click', function () {
-        $('#dialog-container').hide();
-        $('#overlay-shadow').hide();
+    $("#uploadButton").on("click", function () {
+        $("#dialog-container").hide();
+        $("#overlay-shadow").hide();
 
 
 
-        var ifcFile = $('#ifcFileInput')[0].files[0];
-        var dpowFile = $('#rqFileInput')[0].files[0];
+        var ifcFile = $("#ifcFileInput")[0].files[0];
+        var dpowFile = $("#rqFileInput")[0].files[0];
 
         if (ifcFile.name.indexOf(".wexbim") !== -1 || ifcFile.name.indexOf(".wexBIM") !== -1) {
             viewer.load(ifcFile);
@@ -116,7 +116,7 @@
         }
 
         if (typeof (ifcFile) === "undefined" || typeof (dpowFile) === "undefined") {
-            alert('Both files have to be defined');
+            alert("Both files have to be defined");
         }
 
         var formData = new FormData();
@@ -163,7 +163,7 @@
 
             },
             error: function (xhr, status, msg) {
-                showError("Error during sending IFC file", msg, '#files-upload-dialog');
+                showError("Error during sending IFC file", msg, "#files-upload-dialog");
             },
             // Form data
             data: formData,
@@ -206,7 +206,7 @@
 
             },
             error: function (xhr, status, msg) {
-                showError("Error during sending IFC file", msg, '#files-upload-dialog');
+                showError("Error during sending IFC file", msg, "#files-upload-dialog");
             },
             // Form data
             data: formData,
@@ -218,68 +218,69 @@
     });
 
     function reinitControls() {
-        $('#semantic-model').accordion('refresh');
-        $('#semantic-descriptive-info').accordion('refresh');
-        $('#requirements').accordion('refresh');
+        $("#semantic-model").accordion("refresh");
+        $("#semantic-descriptive-info").accordion("refresh");
+        $("#requirements").accordion("refresh");
     }
     initControls();
     $(window).resize(function () {
         reinitControls();
     });
 
-    var keepTarget = false;
+    var activeSelection = false;
+    var activeIds = [];
     var rBrowser = new xBrowser();
     var browser = new xBrowser();
-    browser.on('loaded', function (args) {
+    browser.on("loaded", function (args) {
         var facility = args.model.facility;
         //render parts
-        browser.renderSpatialStructure('structure', true);
-        browser.renderAssetTypes('assetTypes', true);
-        browser.renderSystems('systems');
-        browser.renderZones('zones');
-        browser.renderContacts('contacts');
-        browser.renderDocuments(facility[0], 'facility-documents');
+        browser.renderSpatialStructure("structure", true);
+        browser.renderAssetTypes("assetTypes", true);
+        browser.renderSystems("systems");
+        browser.renderZones("zones");
+        browser.renderContacts("contacts");
+        browser.renderDocuments(facility[0], "facility-documents");
 
         //open and selectfacility node
         $("#structure > ul > li").click();
     });
-    rBrowser.on('loaded', function (args) {
+    rBrowser.on("loaded", function (args) {
         var facility = args.model.facility;
         //render parts
-        rBrowser.renderSpatialStructure('r-structure', true);
-        rBrowser.renderAssetTypes('r-assetTypes', true);
-        rBrowser.renderSystems('r-systems');
-        rBrowser.renderZones('r-zones');
-        rBrowser.renderContacts('r-contacts');
-        rBrowser.renderDocuments(facility[0], 'r-facility-documents');
+        rBrowser.renderSpatialStructure("r-structure", true);
+        rBrowser.renderAssetTypes("r-assetTypes", true);
+        rBrowser.renderSystems("r-systems");
+        rBrowser.renderZones("r-zones");
+        rBrowser.renderContacts("r-contacts");
+        rBrowser.renderDocuments(facility[0], "r-facility-documents");
 
     });
 
 
     function initBrowser(browser) {
-        browser.on('entityClick', function (args) {
+        browser.on("entityClick", function (args) {
             var span = $(args.element).children("span.xbim-entity");
             if (document._lastSelection)
-                document._lastSelection.removeClass('ui-selected');
-            span.addClass('ui-selected');
+                document._lastSelection.removeClass("ui-selected");
+            span.addClass("ui-selected");
             document._lastSelection = span;
         });
-        browser.on('entityActive', function (args) {
+        browser.on("entityActive", function (args) {
             var isRightPanelClick = false;
             if (args.element) 
-                if ($(args.element).parents('#semantic-descriptive-info').length != 0)
+                if ($(args.element).parents("#semantic-descriptive-info").length != 0)
                     isRightPanelClick = true;
 
             //set ID for location button
-            $('#btnLocate').data('id', args.entity.id);
+            $("#btnLocate").data("id", args.entity.id);
 
-            browser.renderPropertiesAttributes(args.entity, 'attrprop');
-            browser.renderAssignments(args.entity, 'assignments');
-            browser.renderDocuments(args.entity, 'documents');
-            browser.renderIssues(args.entity, 'issues');
+            browser.renderPropertiesAttributes(args.entity, "attrprop");
+            browser.renderAssignments(args.entity, "assignments");
+            browser.renderDocuments(args.entity, "documents");
+            browser.renderIssues(args.entity, "issues");
 
             if (isRightPanelClick)
-                $('#attrprop-header').click();
+                $("#attrprop-header").click();
 
         });
     }
@@ -287,15 +288,15 @@
     initBrowser(browser);
     initBrowser(rBrowser);
 
-    browser.on('entityDblclick', function (args) {
+    browser.on("entityDblclick", function (args) {
         var entity = args.entity;
-        var allowedTypes = ['space', 'assettype', 'asset'];
+        var allowedTypes = ["space", "assettype", "asset"];
         if (allowedTypes.indexOf(entity.type) === -1) return;
 
         var id = parseInt(entity.id);
         if (id && viewer) {
-            viewer.resetStates();
-            viewer.renderingMode = "x-ray";
+            viewer.setState(xState.UNDEFINED, activeIds);
+            if (viewer.renderingMode !== "x-ray") $("#xray").click();
             if (entity.type === "assettype") {
                 var ids = [];
                 for (var i = 0; i < entity.children.length; i++) {
@@ -303,15 +304,17 @@
                     ids.push(id);
                 }
                 viewer.setState(xState.HIGHLIGHTED, ids);
+                activeIds = ids;
             }
             else {
                 viewer.setState(xState.HIGHLIGHTED, [id]);
+                activeIds = [id];
             }
             viewer.zoomTo(id);
-            keepTarget = true;
+            activeSelection = true;
         }
     });
-    rBrowser.on('entityDblclick', function (args) {
+    rBrowser.on("entityDblclick", function (args) {
         var entity = args.entity;
         var allowedTypes = ["assettype"];
         if (allowedTypes.indexOf(entity.type) === -1) return;
@@ -327,32 +330,34 @@
     var viewer = null;
     if (check.noErrors) {
         //alert('WebGL support is OK');
-        viewer = new xViewer('viewer-canvas');
+        viewer = new xViewer("viewer-canvas");
         viewer.background = [249, 249, 249, 255];
-        viewer.on('mouseDown', function (args) {
-            if (!keepTarget) viewer.setCameraTarget(args.id);
+        viewer.on("mouseDown", function (args) {
+            if (!activeSelection) viewer.setCameraTarget(args.id);
         });
-        viewer.on('pick', function (args) {
+        viewer.on("pick", function (args) {
             browser.activateEntity(args.id);
-            viewer.renderingMode = 'normal';
-            viewer.resetStates();
-            keepTarget = false;
+            if (activeSelection) {
+                if (viewer.renderingMode === "x-ray") $("#xray").click();
+                //reset state of the selected element
+                viewer.setState(xState.UNDEFINED, activeIds);
+                activeSelection = false;
+            }
         });
-        viewer.on('dblclick', function (args) {
-            viewer.resetStates();
-            viewer.renderingMode = 'x-ray';
+        viewer.on("dblclick", function (args) {
             var id = args.id;
+            if (id == null) return;
+            if (viewer.renderingMode !== "x-ray") $("#xray").click();
             viewer.setState(xState.HIGHLIGHTED, [id]);
-            //viewer.zoomTo(id);
-            keepTarget = true;
+            activeIds = [id];
+            activeSelection = true;
         });
-        //viewer.load('Data/Duplex_MEP_20110907_SRL.wexbim');
         viewer.start();
     }
     else {
-        alert('WebGL support is unsufficient');
-        var msg = document.getElementById('msg');
-        msg.innerHTML = '';
+        alert("WebGL support is unsufficient");
+        var msg = document.getElementById("msg");
+        msg.innerHTML = "";
         for (var i in check.errors) {
             if (check.errors.hasOwnProperty(i)) {
                 var error = check.errors[i];
@@ -361,15 +366,66 @@
         }
     }
 
-    // ---------------------------------- FOR DEVELOPMENT ONLY ------------------------------------ //
-    if (true) { //set this to false for production
-        //Hide upload overlay
-        $("#overlay").hide(200);
+    // ------------------------ TOOLBAR ------------------------------------------------------------//
+    $("#xray").button().on("click", function () {
+        if (viewer)
+            viewer.renderingMode = viewer.renderingMode === "normal" ? viewer.renderingMode = "x-ray" : viewer.renderingMode = "normal";
+    });
+    $("#hiding").buttonset();
+    $("#toolbar").draggable({
+        containment: "#viewer-container"
+    });
+    if (viewer)
+    viewer.on("pick", function (args) {
+        var id = args.id;
+        if (id == null) return;
+        var radios = document.getElementsByName("hiding");
+        for (var i in radios) {
+            if (radios.hasOwnProperty(i)) {
+                var radio = radios[i];
+                if (radio.checked) {
+                    var val = radio.value;
+                    if (val === "noHiding") return;
+                    if (val === "hideOne") viewer.setState(xState.HIDDEN, [id]);
+                    if (val === "hideType") {
+                        var type = viewer.getProductType(id);
+                        viewer.setState(xState.HIDDEN, type);
+                    }
+                    break;
+                }
+            }
+        }
+    });
+    $("#btnResetStates").button().on("click", function() {
+        if (viewer)
+            viewer.resetStates();
+    });
+    $("#btnClip").button().on("click", function () {
+        if (!viewer) return;
+        var state = $(this).data("state");
 
-        //Load default data    
-        browser.load("Data/LakesideRestaurant.json");
-        viewer.load("Data/LakesideRestaurant.wexbim");
-    }
+        if (state !== "clipping") {
+            viewer.clip();
+            $(this)
+                .val("Unclip")
+                .data("state", "clipping");
+        } else {
+            viewer.unclip();
+            $(this)
+                .val("Clip")
+                .data("state", "");
+        }
+    });
+
+    // ---------------------------------- FOR DEVELOPMENT ONLY ------------------------------------ //
+    //if (true) { //set this to false for production
+    //    //Hide upload overlay
+    //    $("#overlay").hide(200);
+    //
+    //    //Load default data    
+    //    browser.load("Data/LakesideRestaurant.json");
+    //    viewer.load("Data/LakesideRestaurant.wexbim");
+    //}
     // ----------------------------- END OF DEVELOPMENT SECTION ----------------------------------- //
 
 });

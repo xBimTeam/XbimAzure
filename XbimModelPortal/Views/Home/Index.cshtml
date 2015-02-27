@@ -30,6 +30,9 @@
             <li>
                 <a href="#requirements-tab">Required</a>
             </li>
+            <li>
+                <a href="#validation-tab">Validation</a>
+            </li>
         </ul>
         <div id="requirements-tab">
             <div id="requirements">
@@ -87,6 +90,9 @@
                 </div>
             </div>
         </div>
+        <div id="validation-tab">
+            
+        </div>
     </div>
 </div>
 
@@ -111,43 +117,25 @@
     </div>
 </div>
 <span class="right" id="btnLocate"><span class="ui-icon ui-icon-pin-s left"></span> Locate</span>
-   
-<style>
-    #toolbar {
-        padding: 4px;
-        display: inline-block;
-        position: absolute;
-        z-index: 5;
-        left: 420px;
-        top: 10px;
-        height: 30px;
-    }
-</style>
+
+
 <div id="toolbar" class="ui-widget-header ui-corner-all">
     <!--Move handle-->
     <span class="ui-icon ui-icon-arrow-4" style="float: left; cursor: move; margin-top: 5px;" id="toolbar-handle"></span>
-    <span id="toolbar-content">
-        <!--Hiding buttons-->
-        <span id="hiding">
-            <input type="radio" id="noHiding" name="hiding" checked="checked"><label for="noHiding">No Hiding</label>
-            <input type="radio" id="hideOne" name="hiding"><label for="hideOne">Hide One</label>
-            <input type="radio" id="hideType" name="hiding"><label for="hideType">Hide Type</label>
+    <!--Hiding buttons-->
+    <span id="hiding">
+            <input type="radio" id="noHiding" value="noHiding" name="hiding" checked="checked"><label for="noHiding">No Hiding</label>
+            <input type="radio" id="hideOne" value="hideOne" name="hiding"><label for="hideOne">Hide One</label>
+            <input type="radio" id="hideType" value="hideType" name="hiding"><label for="hideType">Hide Type</label>
         </span>
-        <!--X-Ray switch-->
-        <input type="checkbox" id="xray"><label for="xray">X-Ray</label>
-</span>
+    <!--X-Ray switch-->
+    <input type="checkbox" id="xray"><label for="xray">X-Ray</label>
+    <!--Reset button-->
+    <input type="button" id="btnResetStates" value="Reset"/>
+    <!--Clip button-->
+    <input type="button" id="btnClip" value="Clip" />
     
 </div>
-<script type="text/javascript">
-    $("#xray").button();
-    $("#hiding").buttonset();
-    $("#toolbar").draggable({
-        containment: "#viewer-container"
-    });
-    $("#toolbar-handle").click(function() {
-        $("#toolbar-content").toggle();
-    });
-</script>
 
 <!-- ui-dialog -->
 <div id="overlay">
