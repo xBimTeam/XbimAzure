@@ -11,6 +11,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
+using Newtonsoft.Json.Linq;
 using XbimCloudCommon;
 using XbimModelPortal.Models;
 
@@ -174,7 +175,7 @@ namespace XbimModelPortal.Controllers
                 return Json(new ModelStateResponse()
                 {
                     State = "ERROR",
-                    Message = "Failed to upload IFC model."
+                    Message = "Failed to upload DPoW model."
                 }, JsonRequestBehavior.AllowGet);
 
             var cloudModel = new XbimCloudModel {Extension = Path.GetExtension(dpowFile.FileName)};
@@ -187,9 +188,11 @@ namespace XbimModelPortal.Controllers
 
                 if (modelBlob != null)
                 {
-                    var queueMessage = new CloudQueueMessage(JsonConvert.SerializeObject(cloudModel));
-                    await _dpowRequestQueue.AddMessageAsync(queueMessage);
-                    Trace.TraceInformation("Created queue message for model {0}", cloudModel.ModelId);
+                    //var queueMessage = new CloudQueueMessage(JsonConvert.SerializeObject(cloudModel));
+                    //await _dpowRequestQueue.AddMessageAsync(queueMessage);
+                    //Trace.TraceInformation("Created queue message for model {0}", cloudModel.ModelId);
+
+                    Json(new { Name = "Martin", Value = 4568});
 
                     return Json(new ModelStateResponse()
                     {

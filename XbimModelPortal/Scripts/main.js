@@ -39,6 +39,9 @@
                 $("#requirements").accordion({
                     heightStyle: "fill"
                 });
+                $("#validation").accordion({
+                    heightStyle: "fill"
+                });
             }
         });
 
@@ -107,17 +110,33 @@
         var ifcFile = $("#ifcFileInput")[0].files[0];
         var dpowFile = $("#rqFileInput")[0].files[0];
 
+        //load requirements file straight away
+        if (typeof (dpowFile) !== "undefined") {
+            rBrowser.load(dpowFile);
+
+            //this is a mock up
+            vBrowser.load(dpowFile);
+
+            if (typeof (ifcFile) === "undefined") {
+                $("#overlay").hide(500, function() {
+                    $("#required-tab-handle").click();
+                });
+                return;
+            }
+
+            
+        }
+
         if (ifcFile.name.indexOf(".wexbim") !== -1 || ifcFile.name.indexOf(".wexBIM") !== -1) {
             viewer.load(ifcFile);
-            viewer.on("loaded", function () {
-                $("#overlay").hide(200);
-            });
             return;
         }
 
-        if (typeof (ifcFile) === "undefined" || typeof (dpowFile) === "undefined") {
-            alert("Both files have to be defined");
-        }
+
+        //if (typeof (ifcFile) === "undefined" || typeof (dpowFile) === "undefined") {
+        //    alert("Both files have to be defined");
+        //}
+        
 
         var formData = new FormData();
         formData.append("ifcFile", ifcFile);
@@ -145,16 +164,10 @@
 
                     whenReady(wexbim, function () {
                         viewer.load("/Services/GetData?model=" + wexbim);
-                        viewer.on("loaded", function () {
-                            $("#overlay").hide(200);
-                        });
                     });
 
                     whenReady(cobie, function () {
                         browser.load("/Services/GetData?model=" + cobie);
-                        browser.on("loaded", function () {
-                            $("#overlay").hide(200);
-                        });
                     });
 
                 }
@@ -191,22 +204,24 @@
                 var response = data;
                 if (typeof (data) == "string")
                     response = JSON.parse(data);
-
+        
                 //wait for wexbim and COBieLite files and load them when ready
                 if (response && response.State === "UPLOADED") {
                     var cobie = response.COBieName;
+        
+                    //get validation results and show them here
 
-                    whenReady(cobie, function () {
-                        rBrowser.load("/Services/GetData?model=" + cobie);
-                    });
-
+                    //whenReady(cobie, function () {
+                    //    rBrowser.load("/Services/GetData?model=" + cobie);
+                    //});
+        
                 }
                 else
                     showError("Error", response.Message);
-
+        
             },
             error: function (xhr, status, msg) {
-                showError("Error during sending IFC file", msg, "#files-upload-dialog");
+                showError("Error during sending DPOW file", msg, "#files-upload-dialog");
             },
             // Form data
             data: formData,
@@ -221,6 +236,7 @@
         $("#semantic-model").accordion("refresh");
         $("#semantic-descriptive-info").accordion("refresh");
         $("#requirements").accordion("refresh");
+        $("#validation").accordion("refresh");
     }
     initControls();
     $(window).resize(function () {
@@ -231,6 +247,7 @@
     var activeIds = [];
     var rBrowser = new xBrowser();
     var browser = new xBrowser();
+    var vBrowser = new xBrowser();
     browser.on("loaded", function (args) {
         var facility = args.model.facility;
         //render parts
@@ -241,8 +258,11 @@
         browser.renderContacts("contacts");
         browser.renderDocuments(facility[0], "facility-documents");
 
-        //open and selectfacility node
+        //open and select facility node
         $("#structure > ul > li").click();
+
+        //hide an overlay
+        $("#overlay").hide(200);
     });
     rBrowser.on("loaded", function (args) {
         var facility = args.model.facility;
@@ -255,8 +275,31 @@
         rBrowser.renderDocuments(facility[0], "r-facility-documents");
 
     });
+    vBrowser.on("loaded", function (args) {
+        var facility = args.model.facility;
+        //render parts
+        rBrowser.renderSpatialStructure("v-structure", true);
+        rBrowser.renderAssetTypes("v-assetTypes", true);
+        //rBrowser.renderSystems("v-systems");
+        //rBrowser.renderZones("v-zones");
+        //rBrowser.renderContacts("v-contacts");
+        rBrowser.renderDocuments(facility[0], "v-facility-documents");
 
+        //add passed mark to all objects
+        $("#validation .xbim-tree-node").prepend("<img src='/Content/img/check16.png' style='float:left;'>");
+        $("#validation .xbim-tree-leaf").prepend("<img src='/Content/img/check16.png' style='float:left;'>");
+        $("#validation td").prepend("<img src='/Content/img/check16.png' style='float:left;'>");
 
+        //add failure mark to some documents
+        var ids = [0, 1, 3, 5, 8, 9, 10, 12, 16];
+        var docs = $("#validation td");
+        for (var i = 0; i < ids.length; i++) {
+            $(docs[ids[i]]).find('img:first').remove();
+            $(docs[ids[i]]).prepend("<img src='/Content/img/err16.png' style='float:left;'>");
+        }
+    });
+
+    //general semantic browser initialization code
     function initBrowser(browser) {
         browser.on("entityClick", function (args) {
             var span = $(args.element).children("span.xbim-entity");
@@ -287,6 +330,7 @@
 
     initBrowser(browser);
     initBrowser(rBrowser);
+    initBrowser(vBrowser);
 
     browser.on("entityDblclick", function (args) {
         var entity = args.entity;
@@ -351,6 +395,9 @@
             viewer.setState(xState.HIGHLIGHTED, [id]);
             activeIds = [id];
             activeSelection = true;
+        });
+        viewer.on("loaded", function () {
+            $("#overlay").hide(200);
         });
         viewer.start();
     }

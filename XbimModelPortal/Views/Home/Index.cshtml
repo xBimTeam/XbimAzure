@@ -28,40 +28,13 @@
                 <a href="#semantic-model-tab">Delivered</a>
             </li>
             <li>
-                <a href="#requirements-tab">Required</a>
+                <a href="#requirements-tab" id="required-tab-handle">Required</a>
             </li>
             <li>
                 <a href="#validation-tab">Validation</a>
             </li>
         </ul>
-        <div id="requirements-tab">
-            <div id="requirements">
-                <h3>Spatial structure</h3>
-                <div class="no-overflow">
-                    <div id="r-structure" class="semantic-model-tree"></div>
-                </div>
-                <h3>Asset types</h3>
-                <div class="no-overflow">
-                    <div id="r-assetTypes" class="semantic-model-tree"></div>
-                </div>
-                <h3>Systems</h3>
-                <div class="no-overflow">
-                    <div id="r-systems" class="semantic-model-tree"></div>
-                </div>
-                <h3>Zones</h3>
-                <div class="no-overflow">
-                    <div id="r-zones" class="semantic-model-tree"></div>
-                </div>
-                <h3>Contacts</h3>
-                <div class="no-overflow">
-                    <div id="r-contacts" class="semantic-model-tree"></div>
-                </div>
-                <h3>Documents</h3>
-                <div class="no-overflow">
-                    <div id="r-facility-documents" class="semantic-model-tree"></div>
-                </div>
-            </div>
-        </div>
+
         <div id="semantic-model-tab">
             <div id="semantic-model">
                 <h3>Spatial structure</h3>
@@ -90,8 +63,61 @@
                 </div>
             </div>
         </div>
+        <div id="requirements-tab">
+            <div id="requirements">
+                <h3>Spatial structure</h3>
+                <div class="no-overflow">
+                    <div id="r-structure" class="semantic-model-tree"></div>
+                </div>
+                <h3>Asset types</h3>
+                <div class="no-overflow">
+                    <div id="r-assetTypes" class="semantic-model-tree"></div>
+                </div>
+                <h3>Systems</h3>
+                <div class="no-overflow">
+                    <div id="r-systems" class="semantic-model-tree"></div>
+                </div>
+                <h3>Zones</h3>
+                <div class="no-overflow">
+                    <div id="r-zones" class="semantic-model-tree"></div>
+                </div>
+                <h3>Contacts</h3>
+                <div class="no-overflow">
+                    <div id="r-contacts" class="semantic-model-tree"></div>
+                </div>
+                <h3>Documents</h3>
+                <div class="no-overflow">
+                    <div id="r-facility-documents" class="semantic-model-tree"></div>
+                </div>
+            </div>
+        </div>
         <div id="validation-tab">
-            
+            <div id="validation">
+                <h3 style="line-height: 32px"><img src="~/Content/img/check32.png" style="vertical-align: middle;  margin-right: 10px;" />Project </h3>
+                <div class="no-overflow">
+                    <div id="v-structure" class="semantic-model-tree"></div>
+                </div>
+                <h3 style="line-height: 32px"><img src="~/Content/img/check32.png" style="vertical-align: middle;  margin-right: 10px;" />Asset types</h3>
+                <div class="no-overflow">
+                    <div id="v-assetTypes" class="semantic-model-tree"></div>
+                </div>
+                @*<h3>Systems</h3>
+                <div class="no-overflow">
+                    <div id="v-systems" class="semantic-model-tree"></div>
+                </div>
+                <h3>Zones</h3>
+                <div class="no-overflow">
+                    <div id="v-zones" class="semantic-model-tree"></div>
+                </div>
+                <h3>Contacts</h3>
+                <div class="no-overflow">
+                    <div id="v-contacts" class="semantic-model-tree"></div>
+                </div>*@
+                <h3 style="line-height: 32px"><img src="~/Content/img/err32.png" style="vertical-align: middle;  margin-right: 10px;" />Documents</h3>
+                <div class="no-overflow">
+                    <div id="v-facility-documents" class="semantic-model-tree"></div>
+                </div>
+            </div>
         </div>
     </div>
 </div>
@@ -156,11 +182,11 @@
                         Select your IFC file to be uploaded and requirements file to be checked.
                     </p>
                     <form class="ui-corner-all" id="ifc-file-form">
-                        <input type="file" id="ifcFileInput" style="display: none;" accept=".ifc,.ifcxml,.ifczip"/>
+                        <input type="file" id="ifcFileInput" style="display: none;" accept=".ifc,.ifcxml,.ifczip,.wexbim"/>
                         <span class="xbim-button" id="ifcButton">Select IFC file</span> <span id="ifcName" class="xbim-file-name ui-corner-all">No file selected...</span>
                     </form>
                     <form class="ui-corner-all">
-                        <input type="file" id="rqFileInput" style="display: none"/>
+                        <input type="file" id="rqFileInput" style="display: none" accept=".json,.dpow" />
                         <span class="xbim-button" id="rqButton">Select requirements file</span> <span id="rqName" class="xbim-file-name ui-corner-all">No file selected...</span>
                     </form>
                     <span class="xbim-button" id="uploadButton">Upload</span>

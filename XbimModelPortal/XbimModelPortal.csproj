@@ -22,7 +22,7 @@
     <IISExpressUseClassicPipelineMode />
     <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>
     <WcfConfigValidationEnabled>True</WcfConfigValidationEnabled>
-    <NuGetPackageImportStamp>5a4b4fec</NuGetPackageImportStamp>
+    <NuGetPackageImportStamp>00af047c</NuGetPackageImportStamp>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -51,6 +51,15 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\EntityFramework.6.1.2\lib\net45\EntityFramework.SqlServer.dll</HintPath>
     </Reference>
+    <Reference Include="Esent.Interop">
+      <HintPath>..\packages\ManagedEsent.1.9.2.0\lib\net40\Esent.Interop.dll</HintPath>
+    </Reference>
+    <Reference Include="ICSharpCode.SharpZipLib">
+      <HintPath>..\packages\NPOI.2.1.3\lib\net40\ICSharpCode.SharpZipLib.dll</HintPath>
+    </Reference>
+    <Reference Include="log4net">
+      <HintPath>..\packages\log4net.2.0.3\lib\net40-full\log4net.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="Microsoft.Data.Edm, Version=5.6.2.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -74,6 +83,20 @@
     <Reference Include="Newtonsoft.Json, Version=6.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\Newtonsoft.Json.6.0.8\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="NPOI">
+      <HintPath>..\packages\NPOI.2.1.3\lib\net40\NPOI.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="NPOI.OOXML">
+      <HintPath>..\packages\NPOI.2.1.3\lib\net40\NPOI.OOXML.dll</HintPath>
+    </Reference>
+    <Reference Include="NPOI.OpenXml4Net">
+      <HintPath>..\packages\NPOI.2.1.3\lib\net40\NPOI.OpenXml4Net.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="NPOI.OpenXmlFormats">
+      <HintPath>..\packages\NPOI.2.1.3\lib\net40\NPOI.OpenXmlFormats.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
@@ -143,6 +166,42 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\WebGrease.1.6.0\lib\WebGrease.dll</HintPath>
     </Reference>
+    <Reference Include="Xbim.COBie">
+      <HintPath>..\packages\Xbim.Exchange.3.0.16-Prerelease\lib\net45\Xbim.COBie.dll</HintPath>
+    </Reference>
+    <Reference Include="Xbim.COBieLite">
+      <HintPath>..\packages\Xbim.Exchange.3.0.16-Prerelease\lib\net45\Xbim.COBieLite.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Xbim.Common">
+      <HintPath>..\packages\Xbim.Essentials.3.0.9\lib\net45\Xbim.Common.dll</HintPath>
+    </Reference>
+    <Reference Include="Xbim.DPoW">
+      <HintPath>..\packages\Xbim.Exchange.3.0.16-Prerelease\lib\net45\Xbim.DPoW.dll</HintPath>
+    </Reference>
+    <Reference Include="Xbim.DPoW.Interfaces">
+      <HintPath>..\packages\Xbim.Exchange.3.0.16-Prerelease\lib\net45\Xbim.DPoW.Interfaces.dll</HintPath>
+    </Reference>
+    <Reference Include="Xbim.Exchanger">
+      <HintPath>..\packages\Xbim.Exchange.3.0.16-Prerelease\lib\net45\Xbim.Exchanger.dll</HintPath>
+    </Reference>
+    <Reference Include="Xbim.Geometry.Engine.Interop">
+      <HintPath>..\packages\Xbim.Geometry.3.0.9\lib\net45\Xbim.Geometry.Engine.Interop.dll</HintPath>
+    </Reference>
+    <Reference Include="Xbim.Ifc.Extensions">
+      <HintPath>..\packages\Xbim.Essentials.3.0.9\lib\net45\Xbim.Ifc.Extensions.dll</HintPath>
+    </Reference>
+    <Reference Include="Xbim.Ifc2x3">
+      <HintPath>..\packages\Xbim.Essentials.3.0.9\lib\net45\Xbim.Ifc2x3.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Xbim.IO">
+      <HintPath>..\packages\Xbim.Essentials.3.0.9\lib\net45\Xbim.IO.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Xbim.ModelGeometry.Scene">
+      <HintPath>..\packages\Xbim.Geometry.3.0.9\lib\net45\Xbim.ModelGeometry.Scene.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="App_Start\BundleConfig.cs" />
@@ -155,11 +214,20 @@
     </Compile>
     <Compile Include="HtmlHelperExtensions.cs" />
     <Compile Include="Models\ModelStateResponse.cs" />
+    <Compile Include="Models\ValidationResults.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
+    <Content Include="Content\img\check.svg" />
+    <Content Include="Content\img\check16.png" />
+    <Content Include="Content\img\check32.png" />
+    <Content Include="Content\img\check64.png" />
+    <Content Include="Content\img\err.svg" />
+    <Content Include="Content\img\err16.png" />
+    <Content Include="Content\img\err32.png" />
+    <Content Include="Content\img\err52.png" />
     <Content Include="Content\jquery-ui-styles\images\ui-bg_flat_0_aaaaaa_40x100.png" />
     <Content Include="Content\jquery-ui-styles\images\ui-bg_flat_75_ffffff_40x100.png" />
     <Content Include="Content\jquery-ui-styles\images\ui-bg_glass_55_fbf9ee_1x400.png" />
@@ -202,6 +270,7 @@
     <Content Include="Scripts\jquery-2.1.3.min.map" />
     <Content Include="Scripts\jquery-ui.js" />
     <Content Include="Scripts\jquery-ui.min.js" />
+    <Content Include="Scripts\model-validation\xResultsBrowser.js" />
     <Content Include="Scripts\modernizr-2.6.2.js" />
     <Content Include="Scripts\modernizr-2.8.3.js" />
     <Content Include="Scripts\respond.js" />
@@ -279,6 +348,13 @@
     </VisualStudio>
   </ProjectExtensions>
   <Import Project="..\packages\Microsoft.Web.WebJobs.Publish.1.0.2\tools\webjobs.targets" Condition="Exists('..\packages\Microsoft.Web.WebJobs.Publish.1.0.2\tools\webjobs.targets')" />
+  <Import Project="..\packages\Xbim.Geometry.3.0.9\build\net45\Xbim.Geometry.targets" Condition="Exists('..\packages\Xbim.Geometry.3.0.9\build\net45\Xbim.Geometry.targets')" />
+  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
+    <PropertyGroup>
+      <ErrorText>This project references NuGet package(s) that are missing on this computer. Enable NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
+    </PropertyGroup>
+    <Error Condition="!Exists('..\packages\Xbim.Geometry.3.0.9\build\net45\Xbim.Geometry.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Xbim.Geometry.3.0.9\build\net45\Xbim.Geometry.targets'))" />
+  </Target>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it.
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">
