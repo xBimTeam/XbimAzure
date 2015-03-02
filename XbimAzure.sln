@@ -25,23 +25,32 @@ EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
+		Local_Release|Any CPU = Local_Release|Any CPU
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{0499558E-F6B8-4388-8AFC-7939CB05B1B2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{0499558E-F6B8-4388-8AFC-7939CB05B1B2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0499558E-F6B8-4388-8AFC-7939CB05B1B2}.Local_Release|Any CPU.ActiveCfg = Local_Release|Any CPU
+		{0499558E-F6B8-4388-8AFC-7939CB05B1B2}.Local_Release|Any CPU.Build.0 = Local_Release|Any CPU
 		{0499558E-F6B8-4388-8AFC-7939CB05B1B2}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{0499558E-F6B8-4388-8AFC-7939CB05B1B2}.Release|Any CPU.Build.0 = Release|Any CPU
 		{F2851CFF-A572-4F0A-855B-D8B828A4ED2A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{F2851CFF-A572-4F0A-855B-D8B828A4ED2A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F2851CFF-A572-4F0A-855B-D8B828A4ED2A}.Local_Release|Any CPU.ActiveCfg = Local_Release|Any CPU
+		{F2851CFF-A572-4F0A-855B-D8B828A4ED2A}.Local_Release|Any CPU.Build.0 = Local_Release|Any CPU
 		{F2851CFF-A572-4F0A-855B-D8B828A4ED2A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F2851CFF-A572-4F0A-855B-D8B828A4ED2A}.Release|Any CPU.Build.0 = Release|Any CPU
 		{C4B98DDB-CDA6-49E0-9608-3570B65ADF24}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{C4B98DDB-CDA6-49E0-9608-3570B65ADF24}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C4B98DDB-CDA6-49E0-9608-3570B65ADF24}.Local_Release|Any CPU.ActiveCfg = Local_Release|Any CPU
+		{C4B98DDB-CDA6-49E0-9608-3570B65ADF24}.Local_Release|Any CPU.Build.0 = Local_Release|Any CPU
 		{C4B98DDB-CDA6-49E0-9608-3570B65ADF24}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C4B98DDB-CDA6-49E0-9608-3570B65ADF24}.Release|Any CPU.Build.0 = Release|Any CPU
 		{D585BF92-5D5F-40AA-B5B7-9C1227BC7467}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{D585BF92-5D5F-40AA-B5B7-9C1227BC7467}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D585BF92-5D5F-40AA-B5B7-9C1227BC7467}.Local_Release|Any CPU.ActiveCfg = Local_Release|Any CPU
+		{D585BF92-5D5F-40AA-B5B7-9C1227BC7467}.Local_Release|Any CPU.Build.0 = Local_Release|Any CPU
 		{D585BF92-5D5F-40AA-B5B7-9C1227BC7467}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D585BF92-5D5F-40AA-B5B7-9C1227BC7467}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection

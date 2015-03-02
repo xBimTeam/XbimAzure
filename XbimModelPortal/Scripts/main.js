@@ -278,19 +278,34 @@
     vBrowser.on("loaded", function (args) {
         var facility = args.model.facility;
         //render parts
-        rBrowser.renderSpatialStructure("v-structure", true);
-        rBrowser.renderAssetTypes("v-assetTypes", true);
+        vBrowser.renderSpatialStructure("v-structure", true);
+        vBrowser.renderAssetTypes("v-assetTypes", true);
         //rBrowser.renderSystems("v-systems");
         //rBrowser.renderZones("v-zones");
         //rBrowser.renderContacts("v-contacts");
-        rBrowser.renderDocuments(facility[0], "v-facility-documents");
+        vBrowser.renderDocuments(facility[0], "v-facility-documents");
 
-        //add passed mark to all objects
-        $("#validation .xbim-tree-node").prepend("<img src='/Content/img/check16.png' style='float:left;'>");
-        $("#validation .xbim-tree-leaf").prepend("<img src='/Content/img/check16.png' style='float:left;'>");
-        $("#validation td").prepend("<img src='/Content/img/check16.png' style='float:left;'>");
+        //add passed mark to all objects where it's name starts with '[T]' and failed to these starting with '[F]'
+        //$("#validation .xbim-tree-node").prepend("<img src='/Content/img/check16.png' style='float:left;'>");
+        //$("#validation .xbim-tree-leaf").prepend("<img src='/Content/img/check16.png' style='float:left;'>");
+        $("#validation .xbim-entity").each(function() {
+            var span = $(this);
+            var txt = span.text().trim();
+            if (txt.indexOf("[T]") === 0) {
+                span.prev().remove();
+                span.before("<img src='/Content/img/check16.png' style='float:left;'>");
+                span.text(txt.substring(3));
+            } else if (txt.indexOf("[F]") === 0) {
+                span.prev().remove();
+                span.before("<img src='/Content/img/err16.png' style='float:left;'>");
+                span.text(txt.substring(3));
+            }
+        });
+
+
 
         //add failure mark to some documents
+        $("#validation td").prepend("<img src='/Content/img/check16.png' style='float:left;'>");
         var ids = [0, 1, 3, 5, 8, 9, 10, 12, 16];
         var docs = $("#validation td");
         for (var i = 0; i < ids.length; i++) {
@@ -325,6 +340,17 @@
             if (isRightPanelClick)
                 $("#attrprop-header").click();
 
+            //validation
+            $("#attrprop td:first-child").each(function() {
+                var tdName = $(this);
+                var txt = tdName.text().trim();
+                if (txt.indexOf("[F]") === 0)
+                    tdName.html('<img src="Content/img/err16.png" style="vertical-align: middle;  margin-right: 10px;" />' + txt.substring(3));
+                else if (txt.indexOf("[T]") === 0) {
+                    tdName.html('<img src="Content/img/check16.png" style="vertical-align: middle;  margin-right: 10px;" />' + txt.substring(3));
+                }
+            });
+
         });
     }
 
@@ -333,6 +359,32 @@
     initBrowser(vBrowser);
 
     browser.on("entityDblclick", function (args) {
+        var entity = args.entity;
+        var allowedTypes = ["space", "assettype", "asset"];
+        if (allowedTypes.indexOf(entity.type) === -1) return;
+
+        var id = parseInt(entity.id);
+        if (id && viewer) {
+            viewer.setState(xState.UNDEFINED, activeIds);
+            if (viewer.renderingMode !== "x-ray") $("#xray").click();
+            if (entity.type === "assettype") {
+                var ids = [];
+                for (var i = 0; i < entity.children.length; i++) {
+                    id = parseInt(entity.children[i].id);
+                    ids.push(id);
+                }
+                viewer.setState(xState.HIGHLIGHTED, ids);
+                activeIds = ids;
+            }
+            else {
+                viewer.setState(xState.HIGHLIGHTED, [id]);
+                activeIds = [id];
+            }
+            viewer.zoomTo(id);
+            activeSelection = true;
+        }
+    });
+    vBrowser.on("entityDblclick", function (args) {
         var entity = args.entity;
         var allowedTypes = ["space", "assettype", "asset"];
         if (allowedTypes.indexOf(entity.type) === -1) return;
@@ -465,14 +517,16 @@
     });
 
     // ---------------------------------- FOR DEVELOPMENT ONLY ------------------------------------ //
-    //if (true) { //set this to false for production
-    //    //Hide upload overlay
-    //    $("#overlay").hide(200);
-    //
-    //    //Load default data    
-    //    browser.load("Data/LakesideRestaurant.json");
-    //    viewer.load("Data/LakesideRestaurant.wexbim");
-    //}
-    // ----------------------------- END OF DEVELOPMENT SECTION ----------------------------------- //
+    if (true) { //set this to false for production
+        //Hide upload overlay
+        $("#overlay").hide(200);
+    
+        //Load default data    
+        browser.load("Data/Lakeside_Restaurant_stage6_Delivered.DPoW.json");
+        rBrowser.load("Data/Lakeside_Restaurant_stage6_Requirements.DPoW.json");
+        vBrowser.load("Data/Lakeside_Restaurant_stage6_Validation.DPoW.json");
+        viewer.load("Data/Lakeside_Restaurant.wexBIM");
+    }
+    //----------------------------- END OF DEVELOPMENT SECTION ----------------------------------- //
 
 });

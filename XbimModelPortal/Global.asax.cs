@@ -21,8 +21,9 @@ namespace XbimModelPortal
             FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters);
             RouteConfig.RegisterRoutes(RouteTable.Routes);
             BundleConfig.RegisterBundles(BundleTable.Bundles);
+#if !LOCAL
             InitializeStorage();
-
+#endif
         }
 
         private void InitializeStorage()
