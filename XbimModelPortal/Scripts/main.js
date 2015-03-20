@@ -517,7 +517,7 @@
     });
 
     // ---------------------------------- FOR DEVELOPMENT ONLY ------------------------------------ //
-    if (true) { //set this to false for production
+    if (false) { //set this to false for production
         //Hide upload overlay
         $("#overlay").hide(200);
     
