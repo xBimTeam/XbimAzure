@@ -428,6 +428,8 @@
         //alert('WebGL support is OK');
         viewer = new xViewer("viewer-canvas");
         viewer.background = [249, 249, 249, 255];
+        //turn the main light little bit off
+        viewer.lightA[3] = 0.7;
         viewer.on("mouseDown", function (args) {
             if (!activeSelection) viewer.setCameraTarget(args.id);
         });
