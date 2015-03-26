@@ -114,17 +114,13 @@
         if (typeof (dpowFile) !== "undefined") {
             rBrowser.load(dpowFile);
 
-            //this is a mock up
-            vBrowser.load(dpowFile);
-
             if (typeof (ifcFile) === "undefined") {
+                vBrowser.load(dpowFile);
                 $("#overlay").hide(500, function() {
                     $("#required-tab-handle").click();
                 });
                 return;
             }
-
-            
         }
 
         if (ifcFile.name.indexOf(".wexbim") !== -1 || ifcFile.name.indexOf(".wexBIM") !== -1) {
@@ -133,15 +129,16 @@
         }
 
 
-        //if (typeof (ifcFile) === "undefined" || typeof (dpowFile) === "undefined") {
-        //    alert("Both files have to be defined");
-        //}
+        if (typeof (dpowFile) === "undefined") {
+            alert("Both files have to be defined");
+        }
         
-
-        var formData = new FormData();
-        formData.append("ifcFile", ifcFile);
+        //send both files and show results
+        var filesForm = new FormData();
+        filesForm.append("ifcfile", ifcFile);
+        filesForm.append("dpowfile", dpowFile);
         $.ajax({
-            url: "Services/UploadIFC",  //Server script to process data
+            url: "Services/UploadModelAndRequirements",  //Server script to process data
             type: "POST",
             //xhr: function () {  // Custom XMLHttpRequest
             //    var myXhr = $.ajaxSettings.xhr();
@@ -161,6 +158,7 @@
                 if (response && response.State === "UPLOADED") {
                     var wexbim = response.WexBIMName;
                     var cobie = response.COBieName;
+                    var validation = response.ValidationCOBieName;
 
                     whenReady(wexbim, function () {
                         viewer.load("/Services/GetData?model=" + wexbim);
@@ -170,61 +168,19 @@
                         browser.load("/Services/GetData?model=" + cobie);
                     });
 
+                    whenReady(validation, function () {
+                        vBrowser.load("/Services/GetData?model=" + validation);
+                    });
                 }
                 else
                     showError("Error", response.Message);
 
-            },
-            error: function (xhr, status, msg) {
-                showError("Error during sending IFC file", msg, "#files-upload-dialog");
-            },
-            // Form data
-            data: formData,
-            //Options to tell jQuery not to process data or worry about content-type.
-            cache: false,
-            contentType: false,
-            processData: false
-        });
-
-        formData = new FormData();
-        formData.append("dpowFile", dpowFile);
-        $.ajax({
-            url: "Services/UploadDPoW",  //Server script to process data
-            type: "POST",
-            //xhr: function () {  // Custom XMLHttpRequest
-            //    var myXhr = $.ajaxSettings.xhr();
-            //    if (myXhr.upload) { // Check if upload property exists
-            //        myXhr.upload.addEventListener('progress', progressHandlingFunction, false); // For handling the progress of the upload
-            //    }
-            //    return myXhr;
-            //},
-            ////Ajax events
-            //beforeSend: beforeSendHandler,
-            success: function (data, status, xhr) {
-                var response = data;
-                if (typeof (data) == "string")
-                    response = JSON.parse(data);
-        
-                //wait for wexbim and COBieLite files and load them when ready
-                if (response && response.State === "UPLOADED") {
-                    var cobie = response.COBieName;
-        
-                    //get validation results and show them here
-
-                    //whenReady(cobie, function () {
-                    //    rBrowser.load("/Services/GetData?model=" + cobie);
-                    //});
-        
-                }
-                else
-                    showError("Error", response.Message);
-        
             },
             error: function (xhr, status, msg) {
                 showError("Error during sending DPOW file", msg, "#files-upload-dialog");
             },
             // Form data
-            data: formData,
+            data: filesForm,
             //Options to tell jQuery not to process data or worry about content-type.
             cache: false,
             contentType: false,

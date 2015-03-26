@@ -17,8 +17,10 @@ namespace XbimModelPortal.Models
         public bool Finished { get; set; }
 
         public string WexBIMName { get; set; }
-        
+
         public string COBieName { get; set; }
+        
+        public string ValidationCOBieName { get; set; }
 
         public string Message { get; set; }
     }

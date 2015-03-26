@@ -1,15 +1,20 @@
 ﻿using System;
+using System.Configuration;
 using System.IO;
 using System.Linq;
-using System.Reflection;
 using Microsoft.WindowsAzure.Storage.Blob;
 using XbimCloudCommon;
 using Microsoft.Azure.WebJobs;
+using Microsoft.WindowsAzure.Storage;
+using Microsoft.WindowsAzure.Storage.Queue;
+using Newtonsoft.Json;
+using Xbim.CobieLiteUK.Validation;
 using Xbim.IO;
 using XbimGeometry.Interfaces;
 using Xbim.ModelGeometry.Scene;
-using Xbim.COBieLite;
-using Xbim.DPoW.Interfaces;
+using Xbim.DPoW;
+using XbimExchanger.DPoWToCOBieLiteUK;
+using XbimExchanger.IfcToCOBieLiteUK;
 
 namespace XbimModelPortalWebJob
 {
@@ -25,44 +30,45 @@ namespace XbimModelPortalWebJob
         public static void GenerateModel(
             [QueueTrigger("modelrequest")] XbimCloudModel blobInfo,
             [Blob("images/{ModelId}{Extension}", FileAccess.Read)] Stream input,
+            [Blob("images/{ModelId}.requirements.json", FileAccess.Read)] Stream requirements,
             [Blob("images/{ModelId}.wexBIM")] CloudBlockBlob outputWexbimBlob,
+            [Blob("images/{ModelId}.validation.json")] CloudBlockBlob outputValidationBlob,
             [Blob("images/{ModelId}.json")] CloudBlockBlob outputCobieBlob)
         {
+            if (input == null || requirements == null) return;
 
-            if (input != null)
+            var facility = ConvertIfcToWexbimAndCobie(input, outputWexbimBlob, outputCobieBlob, blobInfo.Extension);
+            outputWexbimBlob.Properties.ContentType = ".wexBIM";
+            outputCobieBlob.Properties.ContentType = ".json";
+
+            //do validation (validation file should be there already)
+            var vd = new FacilityValidator();
+            var req = Xbim.COBieLiteUK.Facility.ReadJson(requirements);
+            var validated = vd.Validate(req, facility);
+
+            using (var ms = new MemoryStream())
             {
-                ConvertIfcToWexbimAndCobie(input, outputWexbimBlob, outputCobieBlob, blobInfo.Extension);
-                outputWexbimBlob.Properties.ContentType = ".wexBIM";
-                outputCobieBlob.Properties.ContentType = ".json";
+                validated.WriteJson(ms);
+                var bytes = ms.ToArray();
+                outputValidationBlob.UploadFromByteArray(bytes, 0, bytes.Length);
+                outputValidationBlob.Properties.ContentType = ".json"; 
+                ms.Close();
             }
         }
-
-        public static void GenerateDpow(
-            [QueueTrigger("dpowrequest")] XbimCloudModel blobInfo,
-            [Blob("images/{ModelId}{Extension}", FileAccess.Read)] Stream input,
-            [Blob("images/{ModelId}.json")] CloudBlockBlob outputCobieBlob)
-        {
-            if (input != null)
-            {
-                ConvertDpowToCobie(input, outputCobieBlob);
-                outputCobieBlob.Properties.ContentType = ".json";
-            }
-        }
-
 
         public static void ConvertDpowToCobie(Stream input, CloudBlockBlob outputCobieBlob)
         {
             var temp = Path.GetTempFileName();
             try
             {
-                var dpow = PlanOfWork.Open(input);
-                var facility = new FacilityType();
-                var exchanger = new XbimExchanger.DPoWToCOBieLite.DpoWtoCoBieLiteExchanger(dpow, facility);
+                var dpow = PlanOfWork.OpenJson(input);
+                var facility = new Xbim.COBieLiteUK.Facility();
+                var exchanger = new DPoWToCOBieLiteUKExchanger(dpow, facility);
                 exchanger.Convert();
 
-                using (var tw = File.CreateText(temp))
+                using (var tw = File.Create(temp))
                 {
-                    CoBieLiteHelper.WriteJson(tw, facility);
+                    facility.WriteJson(tw);
                     tw.Close();
                 }
                 outputCobieBlob.UploadFromFile(temp, FileMode.Open);
@@ -75,7 +81,7 @@ namespace XbimModelPortalWebJob
            
         }
 
-        public static void ConvertIfcToWexbimAndCobie(Stream input, CloudBlockBlob outputWexbimBlob, CloudBlockBlob outputCobieBlob, string inputExtension)
+        public static Xbim.COBieLiteUK.Facility ConvertIfcToWexbimAndCobie(Stream input, CloudBlockBlob outputWexbimBlob, CloudBlockBlob outputCobieBlob, string inputExtension)
         {
             //temp files 
             var fileName = Path.GetTempPath() + Guid.NewGuid() + inputExtension;
@@ -84,7 +90,7 @@ namespace XbimModelPortalWebJob
             var cobieFileName = Path.ChangeExtension(fileName, ".json");
             try
             {
-
+                Xbim.COBieLiteUK.Facility facility = null;
                 using (var fileStream = File.OpenWrite(fileName))
                 {
                     input.CopyTo(fileStream);
@@ -93,7 +99,7 @@ namespace XbimModelPortalWebJob
                     //open the model and import
                     using (var model = new XbimModel())
                     {
-                        model.CreateFrom(fileName, null, null, true);
+                        model.CreateFrom(fileName, xbimFileName, null, true);
                         var m3DModelContext = new Xbim3DModelContext(model);
 
                         using (var wexBimFile = new FileStream(wexBimFileName, FileMode.Create))
@@ -110,22 +116,20 @@ namespace XbimModelPortalWebJob
 
                         using (var cobieFile = new FileStream(cobieFileName, FileMode.Create))
                         {
-                            var helper = new CoBieLiteHelper(model, "UniClass");
-                            var facility = helper.GetFacilities().FirstOrDefault();
+                            var helper = new CoBieLiteUkHelper(model, "NBS Code");
+                            facility = helper.GetFacilities().FirstOrDefault();
                             if (facility != null)
                             {
-                                using (var writer = new StreamWriter(cobieFile))
-                                {
-                                    CoBieLiteHelper.WriteJson(writer, facility);
-                                    writer.Close();
-                                    outputCobieBlob.UploadFromFile(cobieFileName, FileMode.Open);
-                                }
+                                facility.WriteJson(cobieFile);
+                                cobieFile.Close();
+                                outputCobieBlob.UploadFromFile(cobieFileName, FileMode.Open);
                             }
                         }
 
                         model.Close();
                     }
                 }
+                return facility;
             }
             finally
             {
