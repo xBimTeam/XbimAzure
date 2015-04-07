@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Configuration;
 using System.IO;
 using System.Linq;
@@ -116,8 +117,10 @@ namespace XbimModelPortalWebJob
 
                         using (var cobieFile = new FileStream(cobieFileName, FileMode.Create))
                         {
-                            var helper = new CoBieLiteUkHelper(model, "NBS Code");
-                            facility = helper.GetFacilities().FirstOrDefault();
+                            var facilities = new List<Xbim.COBieLiteUK.Facility>();
+                            var ifcToCoBieLiteUkExchanger = new IfcToCOBieLiteUkExchanger(model, facilities);
+                            facilities = ifcToCoBieLiteUkExchanger.Convert();
+                            facility = facilities.FirstOrDefault();
                             if (facility != null)
                             {
                                 facility.WriteJson(cobieFile);
