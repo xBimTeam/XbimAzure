@@ -45,6 +45,7 @@ namespace XbimModelPortal.Controllers
 
             // Get a reference to the blob container.
             _modelsBlobContainer = blobClient.GetContainerReference("images");
+            _modelsBlobContainer.CreateIfNotExists();
 
             // Get context object for working with queues, and 
             // set a default retry policy appropriate for a web user interface.
@@ -54,6 +55,9 @@ namespace XbimModelPortal.Controllers
             // Get a reference to the queue.
             _modelRequestQueue = queueClient.GetQueueReference("modelrequest");
             _dpowRequestQueue = queueClient.GetQueueReference("dpowrequest");
+
+            _modelRequestQueue.CreateIfNotExists();
+            _dpowRequestQueue.CreateIfNotExists();
         }
 
         private async Task<CloudBlockBlob> UploadAndSaveBlobAsync(HttpPostedFileBase postedFile, string id)

@@ -1,0 +1,72 @@
+﻿
+@{
+    ViewBag.Title = "Validate COBie";
+    Layout = "~/Views/Shared/_LayoutValidation.cshtml";
+}
+<div class="ui-widget">
+    <div id="wizard">
+        <h3>Select your COBie file</h3>
+        <section>
+            <div>
+                <div class="validation-report"></div>
+                <p>
+                    Select your COBie file. Our tool will do its best to get as much information as possible out of it. 
+                </p>
+                <input type="file" style="display: none;" id="input-cobie-file"
+                       accept=".ifc,.ifczip,.ifcxml,.xls,.xlsx,.xml,.json"/>
+                <div style="text-align: center;">
+                    <div class="cobie-file-name"></div>
+                    <button id="btn-cobie-file">Select COBie file</button>
+                </div>
+            </div>
+        </section>
+
+        <h3>Run validation</h3>
+        <section>
+            <div>
+                <p>
+                    This will upload the file "<span class="cobie-file-name"></span>" on our validation server and will perform the validation according to BS 1192-4.
+                </p>
+                <div style="text-align: center;">
+                    <button id="btn-run-validation">Run validation</button>
+                    <div id="progress-report"></div>
+                    <img src="~/Content/loader.gif" alt="loader" width="50" height="50" id="progress-report-loader"/>
+                </div>
+            </div>
+        </section>
+
+        <h3>Review issues</h3>
+        <section>
+            <div>
+                <p>
+                    It is possible to fix some of the problems automaticaly. We put a great effort in this.
+                    Feel free to get this modified file and see the difference.
+                </p>
+                <div style="text-align: center;">
+                    <button id="btn-download-fix">
+                        <img src="~/Content/loader.gif" alt="loader" width="30" height="30" style="vertical-align: middle;"/>
+                        Download fixed COBie
+                    </button>
+                </div>
+                
+                <textarea id="validation-report" readonly="readonly"></textarea>
+            </div>
+        </section>
+    </div>
+
+    <!-- Any additional information goes at the end -->
+    <!--<h2>COBie file validation</h2>
+    <p>
+        COBie is the buzz word now. Everyone heard about it and everyone in UK will supposingly have to deliver it as soon as from the
+        beginning of 2016. And that is pretty soon. There are many tools out there which can produce COBie files. But during our research
+        we found out that quality of these files is varying. To make your life easier we created this tool which will help you to validate
+        your COBie file according to BS 1192 part 4 (which is all about UK flavour of COBie).
+    </p>
+    <p>
+        This doesn't validate your COBie data against any requirements file like a Digital Plan of Work (DPoW) but only against BS1192 part 4
+        restrictions and instructions. However, we also provide a service to validate against requirements defined in
+        NBS BIM Toolkit <a href="#">here</a>.
+    </p>-->
+</div>
+
+

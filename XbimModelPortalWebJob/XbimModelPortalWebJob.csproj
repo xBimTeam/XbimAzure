@@ -146,21 +146,21 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\Microsoft.WindowsAzure.ConfigurationManager.2.0.3\lib\net40\Microsoft.WindowsAzure.Configuration.dll</HintPath>
     </Reference>
-    <Reference Include="Xbim.COBie, Version=3.0.5571.28104, Culture=neutral, processorArchitecture=MSIL">
+    <Reference Include="Xbim.COBie, Version=3.0.5576.29675, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\Xbim.Exchange.3.0.46-Prerelease\lib\net45\Xbim.COBie.dll</HintPath>
+      <HintPath>..\packages\Xbim.Exchange.3.0.54-Prerelease\lib\net45\Xbim.COBie.dll</HintPath>
     </Reference>
-    <Reference Include="Xbim.COBieLite">
-      <HintPath>..\packages\Xbim.Exchange.3.0.46-Prerelease\lib\net45\Xbim.COBieLite.dll</HintPath>
+    <Reference Include="Xbim.COBieLite, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Xbim.Exchange.3.0.54-Prerelease\lib\net45\Xbim.COBieLite.dll</HintPath>
+    </Reference>
+    <Reference Include="Xbim.COBieLiteUK">
+      <HintPath>..\packages\Xbim.Exchange.3.0.54-Prerelease\lib\net45\Xbim.COBieLiteUK.dll</HintPath>
       <Private>True</Private>
-    </Reference>
-    <Reference Include="Xbim.COBieLiteUK, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\Xbim.Exchange.3.0.46-Prerelease\lib\net45\Xbim.COBieLiteUK.dll</HintPath>
     </Reference>
     <Reference Include="Xbim.COBieLiteUK.Validation, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\Xbim.Exchange.3.0.46-Prerelease\lib\net45\Xbim.COBieLiteUK.Validation.dll</HintPath>
+      <HintPath>..\packages\Xbim.Exchange.3.0.54-Prerelease\lib\net45\Xbim.COBieLiteUK.Validation.dll</HintPath>
     </Reference>
     <Reference Include="Xbim.Common, Version=3.0.5570.18463, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -168,11 +168,11 @@
     </Reference>
     <Reference Include="Xbim.DPoW, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\Xbim.Exchange.3.0.46-Prerelease\lib\net45\Xbim.DPoW.dll</HintPath>
+      <HintPath>..\packages\Xbim.Exchange.3.0.54-Prerelease\lib\net45\Xbim.DPoW.dll</HintPath>
     </Reference>
     <Reference Include="Xbim.Exchanger, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\Xbim.Exchange.3.0.46-Prerelease\lib\net45\Xbim.Exchanger.dll</HintPath>
+      <HintPath>..\packages\Xbim.Exchange.3.0.54-Prerelease\lib\net45\Xbim.Exchanger.dll</HintPath>
     </Reference>
     <Reference Include="Xbim.Geometry.Engine.Interop, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -200,6 +200,8 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CobieValidation.cs" />
+    <Compile Include="Extensions\CloudBlockBlobExtensions.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Functions.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
