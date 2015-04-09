@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using Microsoft.Azure.WebJobs;
 using Microsoft.WindowsAzure.Storage.Blob;
 using Xbim.CobieLiteUK.Validation;
+using Xbim.CobieLiteUK.Validation.Reporting;
 using Xbim.COBieLiteUK;
 using Xbim.IO;
 using XbimCloudCommon;
@@ -23,66 +24,160 @@ namespace XbimModelPortalWebJob
            [Blob("images/{ModelId}.state")] CloudBlockBlob state,
            [Blob("images/{ModelId}.fixed.xlsx")] CloudBlockBlob fixedCobie)
         {
-            if (input == null) return;
-
-            Facility facility = null;
-            string msg = null;
-            var log = new StringWriter();
-            switch (blobInfo.Extension)
+            try
             {
-                case ".ifc":
-                case ".ifczip":
-                case ".ifcxml":
-                    facility = GetFacilityFromIfc(input, blobInfo.Extension);
-                    break;
-                case ".json":
-                    facility = Facility.ReadJson(input);
-                    break;
-                case ".xml":
-                    facility = Facility.ReadXml(input);
-                    break;
-                case ".xls":
-                    facility = Facility.ReadCobie(input, ExcelTypeEnum.XLS, out msg);
-                    break;
-                case ".xlsx":
-                    facility = Facility.ReadCobie(input, ExcelTypeEnum.XLSX, out msg);
-                    break;
-            }
+                if (input == null) return;
 
-            state.WriteLine("COBie data parsed. Created computable model.");
-
-            if (facility == null)
-            {
-                return;
-            }
-
-            if (msg != null)
-                log.Write(msg);
-
-            facility.ValidateUK2012(log, true);
-            state.WriteLine("COBie data validated. Validation report is being created.");
-            using (var logStream = validationReport.OpenWrite())
-            {
-                using (var writer = new StreamWriter(logStream))
+                Facility facility = null;
+                string msg = null;
+                var log = new StringWriter();
+                switch (blobInfo.Extension)
                 {
-                    writer.Write(log.ToString());
-                    writer.Flush();
-                    writer.Close();
+                    case ".ifc":
+                    case ".ifczip":
+                    case ".ifcxml":
+                        facility = GetFacilityFromIfc(input, blobInfo.Extension);
+                        break;
+                    case ".json":
+                        facility = Facility.ReadJson(input);
+                        break;
+                    case ".xml":
+                        facility = Facility.ReadXml(input);
+                        break;
+                    case ".xls":
+                        facility = Facility.ReadCobie(input, ExcelTypeEnum.XLS, out msg);
+                        break;
+                    case ".xlsx":
+                        facility = Facility.ReadCobie(input, ExcelTypeEnum.XLSX, out msg);
+                        break;
                 }
-            }
 
-            state.WriteLine("Fixed COBie data model created. Model will be serialized to XLSX according to BS 1192-4.");
-            using (var ms = fixedCobie.OpenWrite())
+                state.WriteLine("COBie data parsed. Created computable model.");
+
+                if (facility == null)
+                {
+                    return;
+                }
+
+                if (msg != null)
+                    log.Write(msg);
+
+                facility.ValidateUK2012(log, true);
+                state.WriteLine("COBie data validated. Validation report is being created.");
+                using (var logStream = validationReport.OpenWrite())
+                {
+                    using (var writer = new StreamWriter(logStream))
+                    {
+                        writer.Write(log.ToString());
+                        writer.Flush();
+                        writer.Close();
+                    }
+                }
+
+                state.WriteLine("Fixed COBie data model created. Model will be serialized to XLSX according to BS 1192-4.");
+                using (var ms = fixedCobie.OpenWrite())
+                {
+                    facility.WriteCobie(ms, ExcelTypeEnum.XLSX, out msg);
+                    fixedCobie.Properties.ContentType = ".xlsx";
+                    ms.Close();
+                }
+                state.WriteLine("Processing finished");
+            }
+            catch (Exception e)
             {
-                facility.WriteCobie(ms, ExcelTypeEnum.XLSX, out msg);
-                fixedCobie.Properties.ContentType = ".xlsx";
-                ms.Close();
+                state.WriteLine("Error in processing! <br />" + System.Security.SecurityElement.Escape(e.Message));
             }
-            state.WriteLine("Processing finished");
-
         }
 
-        
+        public static void VerifyCobie(
+           [QueueTrigger("cobieverificationqueue")] XbimCloudModel blobInfo,
+           [Blob("images/{ModelId}{Extension}", FileAccess.Read)] Stream input,
+           [Blob("images/{ModelId}.requirements{Extension2}", FileAccess.Read)] Stream inputRequirements,
+           [Blob("images/{ModelId}.json")] CloudBlockBlob report,
+           [Blob("images/{ModelId}.state")] CloudBlockBlob state,
+           [Blob("images/{ModelId}.report.xlsx")] CloudBlockBlob reportXls)
+        {
+
+            try
+            {
+                if (input == null) return;
+
+                Facility facility = null;
+                string msg = null;
+                var log = new StringWriter();
+                switch (blobInfo.Extension)
+                {
+                    case ".ifc":
+                    case ".ifczip":
+                    case ".ifcxml":
+                        facility = GetFacilityFromIfc(input, blobInfo.Extension);
+                        break;
+                    case ".json":
+                        facility = Facility.ReadJson(input);
+                        break;
+                    case ".xml":
+                        facility = Facility.ReadXml(input);
+                        break;
+                    case ".xls":
+                        facility = Facility.ReadCobie(input, ExcelTypeEnum.XLS, out msg);
+                        break;
+                    case ".xlsx":
+                        facility = Facility.ReadCobie(input, ExcelTypeEnum.XLSX, out msg);
+                        break;
+                }
+
+                state.WriteLine("COBie data parsed. Created computable model.");
+
+                Facility requirements = null;
+                switch (blobInfo.Extension2)
+                {
+                    case ".xml":
+                        requirements = Facility.ReadXml(inputRequirements);
+                        break;
+                    case ".json":
+                        requirements = Facility.ReadJson(inputRequirements);
+                        break;
+                }
+
+                state.WriteLine("DPoW requirements data parsed. Created computable model.");
+
+                if (facility == null || requirements == null)
+                    return;
+
+                var vd = new FacilityValidator();
+                var validated = vd.Validate(requirements, facility);
+                using (var repStream = report.OpenWrite())
+                {
+                    validated.WriteJson(repStream);
+                    repStream.Close();
+                    report.Properties.ContentType = ".json";
+                }
+                state.WriteLine("Structured validation report created. Excel report to be created.");
+
+                var rep = new ExcelValidationReport();
+                var temp = Path.ChangeExtension(Path.GetTempFileName(), ".xlsx");
+
+                try
+                {
+                    rep.Create(facility, temp, ExcelValidationReport.SpreadSheetFormat.Xlsx);
+                    reportXls.UploadFromFile(temp, FileMode.Open);
+                    state.WriteLine("XLSX validation report created.");
+                }
+                finally
+                {
+                    if (File.Exists(temp))
+                        File.Delete(temp);
+                }
+
+                state.WriteLine("Processing finished.");
+            }
+            catch (Exception e)
+            {
+                state.WriteLine("Error in processing! <br />" + System.Security.SecurityElement.Escape(e.Message));
+            }
+
+            
+        }
 
         private static Facility GetFacilityFromIfc(Stream file, string extension)
         {

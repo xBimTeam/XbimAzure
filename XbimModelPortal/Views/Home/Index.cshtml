@@ -2,206 +2,84 @@
     Layout = null;
 }
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
+<html>
 <head>
-    <title>xBIM Viewer</title>
-    <link href="~/Content/jquery-ui-styles/jquery-ui.css" rel="stylesheet"/>
-    <link href="~/Content/xbrowser-styles.css" rel="stylesheet"/>
-
-    <script src="~/bundles/jquery"></script>
-    <script src="~/bundles/jqueryui"></script>
-    @*<script src="~/bundles/xviewer"></script>*@
-
-    <script src="~/Scripts/xbim-viewer.debug.bundle.js"></script>
-    <script src="~/Scripts/xbim-browser.js"></script>
-    <script src="~/Scripts/main.js"></script>
-
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>xBIM Tools</title>
+    @Styles.Render("~/Content/css")
+    @Scripts.Render("~/bundles/modernizr")
+    @Scripts.Render("~/bundles/jquery")
+    <style>
+        .btn-default {
+            background-color: #2184be;
+            color: white;
+            font-weight: bold;
+            -moz-min-width: 50%;
+            -ms-min-width: 50%;
+            -o-min-width: 50%;
+            -webkit-min-width: 50%;
+            min-width: 50%;
+            margin-left: auto;
+            margin-right: auto;
+        }
+    </style>
 </head>
 <body>
-<div id="viewer-container">
-    <canvas id="viewer-canvas"></canvas>
-</div>
-<div id="semantic-model-container" class="noselect">
-    <div id="semantic-tabs">
-        <ul>
-            <li>
-                <a href="#semantic-model-tab">Delivered</a>
-            </li>
-            <li>
-                <a href="#requirements-tab" id="required-tab-handle">Required</a>
-            </li>
-            <li>
-                <a href="#validation-tab">Validation</a>
-            </li>
-        </ul>
+<div class="container body-content">
 
-        <div id="semantic-model-tab">
-            <div id="semantic-model">
-                <h3>Spatial structure</h3>
-                <div class="no-overflow">
-                    <div id="structure" class="semantic-model-tree"></div>
-                </div>
-                <h3>Asset types</h3>
-                <div class="no-overflow">
-                    <div id="assetTypes" class="semantic-model-tree"></div>
-                </div>
-                <h3>Systems</h3>
-                <div class="no-overflow">
-                    <div id="systems" class="semantic-model-tree"></div>
-                </div>
-                <h3>Zones</h3>
-                <div class="no-overflow">
-                    <div id="zones" class="semantic-model-tree"></div>
-                </div>
-                <h3>Contacts</h3>
-                <div class="no-overflow">
-                    <div id="contacts" class="semantic-model-tree"></div>
-                </div>
-                <h3>Documents</h3>
-                <div class="no-overflow">
-                    <div id="facility-documents" class="semantic-model-tree"></div>
-                </div>
-            </div>
+    <div class="row">
+        <div class="col-md-8">
+            <h1>
+                xBIM Tools for BIM Toolkit
+            </h1>
         </div>
-        <div id="requirements-tab">
-            <div id="requirements">
-                <h3>Spatial structure</h3>
-                <div class="no-overflow">
-                    <div id="r-structure" class="semantic-model-tree"></div>
-                </div>
-                <h3>Asset types</h3>
-                <div class="no-overflow">
-                    <div id="r-assetTypes" class="semantic-model-tree"></div>
-                </div>
-                <h3>Systems</h3>
-                <div class="no-overflow">
-                    <div id="r-systems" class="semantic-model-tree"></div>
-                </div>
-                <h3>Zones</h3>
-                <div class="no-overflow">
-                    <div id="r-zones" class="semantic-model-tree"></div>
-                </div>
-                <h3>Contacts</h3>
-                <div class="no-overflow">
-                    <div id="r-contacts" class="semantic-model-tree"></div>
-                </div>
-                <h3>Documents</h3>
-                <div class="no-overflow">
-                    <div id="r-facility-documents" class="semantic-model-tree"></div>
-                </div>
-            </div>
+        <div class="col-md-4">
+            <img src="~/Content/img/xBIM_official_icon.png" alt="logo" class="pull-right" />
         </div>
-        <div id="validation-tab">
-            <div id="validation">
-                <h3 style="line-height: 32px"><img src="~/Content/img/check32.png" style="vertical-align: middle;  margin-right: 10px;" />Project </h3>
-                <div class="no-overflow">
-                    <div id="v-structure" class="semantic-model-tree"></div>
-                </div>
-                <h3 style="line-height: 32px"><img src="~/Content/img/check32.png" style="vertical-align: middle;  margin-right: 10px;" />Asset types</h3>
-                <div class="no-overflow">
-                    <div id="v-assetTypes" class="semantic-model-tree"></div>
-                </div>
-                @*<h3>Systems</h3>
-                <div class="no-overflow">
-                    <div id="v-systems" class="semantic-model-tree"></div>
-                </div>
-                <h3>Zones</h3>
-                <div class="no-overflow">
-                    <div id="v-zones" class="semantic-model-tree"></div>
-                </div>
-                <h3>Contacts</h3>
-                <div class="no-overflow">
-                    <div id="v-contacts" class="semantic-model-tree"></div>
-                </div>*@
-                <h3 style="line-height: 32px"><img src="~/Content/img/err32.png" style="vertical-align: middle;  margin-right: 10px;" />Documents</h3>
-                <div class="no-overflow">
-                    <div id="v-facility-documents" class="semantic-model-tree"></div>
-                </div>
-            </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-4">
+            <h2>Submission preview</h2>
+            <p>
+                After you got a Digital Plan of Work requirements as a part of your job you started to develop your design or a part of it.
+                This tool will help you to understand if you met the DPoW requirements and to identify flaws in a data in a familiar environment
+                of 3D viewer. You will need IFC model of your data and DPoW requirements file to be able to use this tool.
+            </p>
+            <a class="btn btn-default" href="@Url.Action("Index", "Model")" target="_blank">Submission preview</a>
+        </div>
+        <div class="col-md-4">
+            <h2>DPoW verification</h2>
+            <p>
+                This tool will do COBie verification against Digital Plan of Work requirements. You will have DPoW data created
+                from NBS BIM Toolkit. That is a place to go to create the specification. You will be able to download uncluttered Excel
+                spreadsheet report of the verification.
+            </p>
+            <a class="btn btn-default" href="@Url.Action("Index", "Verification")" target="_blank">Verify DPoW</a>
+        </div>
+        <div class="col-md-4">
+            <h2>COBie validation</h2>
+            <p>
+                COBie is the buzz word now. Everyone heard about it and everyone in UK will supposingly have to deliver it as soon as from the
+                beginning of 2016. And that is pretty soon. There are many tools out there which can produce COBie files. But during our research
+                we found out that quality of these files is varying. To make your life easier we created this tool which will help you to validate
+                your COBie file according to BS 1192 part 4 (which is all about UK flavour of COBie).
+            </p>
+            @*<p>
+                Apart from being able to validata your COBie file we offer you an option to download fixed version of your data.
+                This means we might create default data in there to make the file compliant to BS 1192 part 4 or rename entities with
+                duplicated names. Please, be aware that even if we put our best into this tool we are not responsible for the resulting data.
+                If you use this data for any purpose it is solely your responsibility.
+            </p>*@
+            <a class="btn btn-default" href="@Url.Action("Index", "Validation")" target="_blank">Validate COBie</a>
         </div>
     </div>
 </div>
+<footer class="footer">
+    <p>&copy; @DateTime.Now.Year - xBIM Team, Northumbria University</p>
+</footer>
 
-<div id="semantic-descriptive-info-container">
-    <div id="semantic-descriptive-info">
-        <h3 id="attrprop-header">Properties and attributes </h3>
-        <div class="no-overflow-y">
-            <div id="attrprop"></div>
-        </div>
-        <h3>Documents</h3>
-        <div class="no-overflow">
-            <div id="documents"></div>
-        </div>
-        <h3>Tasks</h3>
-        <div class="no-overflow">
-            <div id="issues"></div>
-        </div>
-        <h3>Assignments</h3>
-        <div class="no-overflow">
-            <div id="assignments"></div>
-        </div>
-    </div>
-</div>
-<span class="right" id="btnLocate"><span class="ui-icon ui-icon-pin-s left"></span> Locate</span>
-
-
-<div id="toolbar" class="ui-widget-header ui-corner-all">
-    <!--Move handle-->
-    <span class="ui-icon ui-icon-arrow-4" style="float: left; cursor: move; margin-top: 5px;" id="toolbar-handle"></span>
-    <!--Hiding buttons-->
-    <span id="hiding">
-            <input type="radio" id="noHiding" value="noHiding" name="hiding" checked="checked"><label for="noHiding">No Hiding</label>
-            <input type="radio" id="hideOne" value="hideOne" name="hiding"><label for="hideOne">Hide One</label>
-            <input type="radio" id="hideType" value="hideType" name="hiding"><label for="hideType">Hide Type</label>
-        </span>
-    <!--X-Ray switch-->
-    <input type="checkbox" id="xray"><label for="xray">X-Ray</label>
-    <!--Reset button-->
-    <input type="button" id="btnResetStates" value="Reset"/>
-    <!--Clip button-->
-    <input type="button" id="btnClip" value="Clip" />
-    
-</div>
-
-<!-- ui-dialog -->
-<div id="overlay">
-    <div class="ui-widget-overlay"></div>
-    <img src="~/Content/loader.gif" title="loader" alt="loader" style="width: 150px; height: 150px; position: absolute; left: 50%; top: 50%; margin: -75px 0 0 -75px; padding: 0;"/>
-    <div id="overlay-shadow"
-         class="ui-widget-shadow ui-corner-all"
-         style="width: 602px; height: 402px; position: absolute; left: 50%; top: 50%; margin: -201px 0 0 -301px; padding: 0">
-    </div>
-    <div id="dialog-container"
-         style="width: 550px; height: 350px; position: absolute; left: 50%; top: 50%; margin: -175px 0 0 -275px; padding: 0;"
-         class="ui-widget ui-widget-content ui-corner-all">
-        <div class="ui-dialog-content ui-widget-content" style="background: none; border: 0;">
-            <div id="dialog-content" style="padding: 25px;">
-                <div id="files-upload-dialog" class="xbim-dialog">
-                    <h1>Files upload</h1>
-                    <p>
-                        Select your IFC file to be uploaded and requirements file to be checked.
-                    </p>
-                    <form class="ui-corner-all" id="ifc-file-form">
-                        <input type="file" id="ifcFileInput" style="display: none;" accept=".ifc,.ifcxml,.ifczip,.wexbim" multiple="multiple"/>
-                        <span class="xbim-button" id="ifcButton">Select IFC file</span> <span id="ifcName" class="xbim-file-name ui-corner-all">No file selected...</span>
-                    </form>
-                    <form class="ui-corner-all">
-                        <input type="file" id="rqFileInput" style="display: none" accept=".json,.dpow" />
-                        <span class="xbim-button" id="rqButton">Select requirements file</span> <span id="rqName" class="xbim-file-name ui-corner-all">No file selected...</span>
-                    </form>
-                    <span class="xbim-button" id="uploadButton">Upload</span>
-                </div>
-                <div id="error-dialog" class="xbim-dialog" style="display: none;">
-                    <h1 id="error-dialog-header"></h1>
-                    <p id="error-dialog-content">
-
-                    </p>
-                    <span id="errOkButton" class="xbim-button">OK</span>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
-
+@Scripts.Render("~/bundles/bootstrap")
 </body>
 </html>

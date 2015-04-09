@@ -11,19 +11,13 @@
     margin-top: 2em;
     padding: 2em;
     background: white;
+    -webkit-box-shadow: 0 0 20px #999;
+    -ms-box-shadow: 0 0 20px #999;
     box-shadow: 0 0 20px #999;
 }
 
 .wizard > .steps .number {
     font-size: 200%;
-}
-
-div.cobie-file-name {
-    margin-bottom: 0.5em;
-}
-
-.wizard > .steps > ul > li {
-    width: 33.333%;
 }
 
 .wizard > .content {
@@ -47,7 +41,9 @@ div.cobie-file-name {
 }
 
 #validation-report {
-    width: 100%;
+    width: 95%;
+    margin-left: auto;
+    margin-right: auto;
     height: 15em;
     margin-top: 1.5em;
     padding: 0.8em;
@@ -63,11 +59,19 @@ div.cobie-file-name {
   clear:both;
 }
 
-.cobie-file-name {
+.file-name {
     font-weight: bold;
     font-size: 105%;
+    margin-bottom: 0.8em;
 }
 
-.validation-report {
+.form-err {
     color: red;
+}
+
+#validation-report-success {
+    text-align: center;
+    font-size: 120%;
+    font-weight: bold;
+    color: #2184be;
 }

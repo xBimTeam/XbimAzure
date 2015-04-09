@@ -7,8 +7,8 @@
         bodyTag: "section",
         transitionEffect: "fade",
         autoFocus: true,
-        enableFinishButton: false,
-        onStepChanging: function(event, currentIndex, newIndex) {
+        enablePagination: false,
+        onStepChanging: function (event, currentIndex, newIndex) {
             switch (newIndex) {
             case 2:
                 return reportAvailable;
@@ -22,16 +22,16 @@
             case 1:
                 var file = $("#input-cobie-file")[0].files[0];
                 if (typeof (file) === "undefined") {
-                    $(".validation-report").text("Select COBie file.");
+                    $("#form-err-1").text("Select COBie file.");
                     return false;
                 }
                 var ext = file.name.split('.').pop().toLowerCase();
                 var exts = $("#input-cobie-file").attr("accept");
                 if (exts.indexOf(ext) === -1) {
-                    $(".validation-report").text("Invalid file extension");
+                    $("#form-err-1").text("Invalid file extension");
                     return false;
                 } else {
-                    $(".validation-report").text("");
+                    $("#form-err-1").text("");
                     return true;
                 }
             case 2:
@@ -67,7 +67,7 @@
 
     function whenReady(model, callback) {
         var xmlhttp = new XMLHttpRequest();
-        xmlhttp.open("GET", "IsModelReady?model=" + model, true);
+        xmlhttp.open("GET", "Validation/IsModelReady?model=" + model, true);
         xmlhttp.onreadystatechange = function() {
             if (xmlhttp.readyState === 4 && xmlhttp.status === 200) {
                 var data = JSON.parse(xmlhttp.responseText);
@@ -91,7 +91,7 @@
         var data = new FormData();
         data.append("file", file);
         $.ajax({
-            url: "ValidateCobieFile", //Server script to process data
+            url: "Validation/ValidateCobieFile", //Server script to process data
             type: "POST",
             xhr: function() { // Custom XMLHttpRequest
                 var myXhr = $.ajaxSettings.xhr();
@@ -119,7 +119,7 @@
 
                     whenReady(report, function() {
                         //get report data
-                        $.get("GetData?model=" + report, null, function(reportData, reportStatus) {
+                        $.get("Validation/GetData?model=" + report, null, function (reportData, reportStatus) {
                             reportAvailable = true;
                             //roll to the last step
                             var current = $("#wizard").steps("getCurrentIndex");
@@ -128,17 +128,24 @@
                                     break;
                                 current = $("#wizard").steps("getCurrentIndex");
                             }
-                            $("#validation-report").val(reportData);
+                            //hide validation report if it was a complete success
+                            if (reportData.length === 0) {
+                                $("#validation-report").hide(0);
+                                $("#validation-report-success").show(0).text("Congratulations! There are no errors in this COBie file.");
+                            } else {
+                                $("#validation-report-success").hide(0);
+                                $("#validation-report").show(0).val(reportData);
+                            }
                         });
                     });
 
                     whenReady(state, function() {
                         var reportState = function() {
-                            $.get("GetData?model=" + state, null, function(stateData, reportStatus) {
+                            $.get("Validation/GetData?model=" + state, null, function (stateData, reportStatus) {
                                 progress.text(stateData);
                             });
                             if (doReport)
-                                setTimeout(reportState, 1000);
+                                setTimeout(reportState, 500);
                             else {
                                 progress.text("");
                                 $("#progress-report-loader").hide();
@@ -155,7 +162,7 @@
                             //download the file
                             var dotIndex = fileName.lastIndexOf(".");
                             var name = fileName.substring(0, dotIndex);
-                            window.location = 'GetData?model=' + fixedCobie + "&name=" + encodeURI(name);
+                            window.location = 'Validation/GetData?model=' + fixedCobie + "&name=" + encodeURI(name);
                         });
 
                     });

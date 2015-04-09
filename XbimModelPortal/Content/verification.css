@@ -1,0 +1,28 @@
+﻿.wizard > .steps > ul > li {
+    width: 25%;
+}
+
+#semantic-browser {
+    height: 50em;
+    margin: 2em 0 0 0;
+    padding: 0;
+    position: relative;
+    left: 0;
+    top: 0;
+}
+
+.panel50 {
+    width: 49.9%;
+    float: left;
+    margin: 0;
+    padding: 0;
+    height: 100%;
+}
+
+.no-overflow-y{
+    overflow-y:auto;
+}
+
+.no-overflow{
+    overflow:scroll;
+}

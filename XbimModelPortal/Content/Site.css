@@ -1,6 +1,5 @@
 ﻿body {
-    padding-top: 50px;
-    padding-bottom: 20px;
+    padding-top: 10px;
 }
 
 /* Set padding to keep content from hitting the edges */
@@ -21,4 +20,35 @@ input,
 select,
 textarea {
     max-width: 280px;
+}
+
+h1 {
+    font-weight: bolder;
+    color:#4f85a1
+}
+
+/* Sticky footer styles
+-------------------------------------------------- */
+html {
+  position: relative;
+  min-height: 100%;
+}
+body {
+  /* Margin bottom by footer height */
+  margin-bottom: 30px;
+}
+.footer {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  /* Set the fixed height of the footer here */
+  height: 30px;
+  background-color: #f5f5f5;
+  text-align: center;
+    padding-top: 5px;
+}
+
+.footer p {
+    margin: 0;
+    padding: 0;
 }

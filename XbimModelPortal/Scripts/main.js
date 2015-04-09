@@ -87,7 +87,7 @@
 
     function whenReady(model, callback) {
         var xmlhttp = new XMLHttpRequest();
-        xmlhttp.open("GET", "/Services/IsModelReady?model=" + model, true);
+        xmlhttp.open("GET", "Model/IsModelReady?model=" + model, true);
         xmlhttp.onreadystatechange = function () {
             if (xmlhttp.readyState === 4 && xmlhttp.status === 200) {
                 var data = JSON.parse(xmlhttp.responseText);
@@ -138,7 +138,7 @@
         filesForm.append("ifcfile", ifcFile);
         filesForm.append("dpowfile", dpowFile);
         $.ajax({
-            url: "Services/UploadModelAndRequirements",  //Server script to process data
+            url: "Model/UploadModelAndRequirements",  //Server script to process data
             type: "POST",
             //xhr: function () {  // Custom XMLHttpRequest
             //    var myXhr = $.ajaxSettings.xhr();
@@ -161,15 +161,15 @@
                     var validation = response.ValidationCOBieName;
 
                     whenReady(wexbim, function () {
-                        viewer.load("/Services/GetData?model=" + wexbim);
+                        viewer.load("Model/GetData?model=" + wexbim);
                     });
 
                     whenReady(cobie, function () {
-                        browser.load("/Services/GetData?model=" + cobie);
+                        browser.load("Model/GetData?model=" + cobie);
                     });
 
                     whenReady(validation, function () {
-                        vBrowser.load("/Services/GetData?model=" + validation);
+                        vBrowser.load("Model/GetData?model=" + validation);
                     });
                 }
                 else

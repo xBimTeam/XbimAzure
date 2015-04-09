@@ -148,9 +148,11 @@
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
+    <Compile Include="Controllers\CloudStorageController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
-    <Compile Include="Controllers\ServicesController.cs" />
+    <Compile Include="Controllers\ModelController.cs" />
     <Compile Include="Controllers\ValidationController.cs" />
+    <Compile Include="Controllers\VerificationController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -170,6 +172,7 @@
     <Content Include="Content\img\err16.png" />
     <Content Include="Content\img\err32.png" />
     <Content Include="Content\img\err52.png" />
+    <Content Include="Content\img\xBIM_official_icon.png" />
     <Content Include="Content\jquery-ui-styles\images\ui-bg_flat_0_aaaaaa_40x100.png" />
     <Content Include="Content\jquery-ui-styles\images\ui-bg_flat_75_ffffff_40x100.png" />
     <Content Include="Content\jquery-ui-styles\images\ui-bg_glass_55_fbf9ee_1x400.png" />
@@ -204,6 +207,8 @@
     <Content Include="Content\jquery_ui_styles_start_theme\images\ui-icons_f7a50d_256x240.png" />
     <Content Include="Content\jquery_ui_styles_start_theme\images\ui-icons_fcd113_256x240.png" />
     <Content Include="Content\jquery_ui_styles_start_theme\jquery-ui.css" />
+    <Content Include="Content\verification.css" />
+    <Content Include="Content\validation.css" />
     <Content Include="Content\wizard.css" />
     <Content Include="Content\xbrowser-styles.css" />
     <Content Include="favicon.ico" />
@@ -240,8 +245,9 @@
     <Content Include="Scripts\modernizr-2.8.3.js" />
     <Content Include="Scripts\respond.js" />
     <Content Include="Scripts\respond.min.js" />
+    <Content Include="Scripts\verification-main.js" />
     <Content Include="Scripts\webgl-utils.min.js" />
-    <Content Include="Scripts\wizard.js" />
+    <Content Include="Scripts\validation-main.js" />
     <Content Include="Scripts\xbim-browser.js" />
     <Content Include="Scripts\xbim-browser.min.js" />
     <Content Include="Scripts\xbim-services-proxy.js" />
@@ -262,12 +268,15 @@
     <Content Include="Views\Shared\_Layout.cshtml" />
     <Content Include="Views\Home\About.cshtml" />
     <Content Include="Views\Home\Contact.cshtml" />
-    <Content Include="Views\Home\Index.cshtml" />
-    <Content Include="Views\Shared\_LayoutValidation.cshtml" />
+    <Content Include="Views\Model\Index.cshtml" />
+    <Content Include="Views\Shared\_LayoutWizard.cshtml" />
     <Content Include="Views\Validation\Index.cshtml" />
+    <Content Include="Views\Verification\Index.cshtml" />
+    <Content Include="Views\Home\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="Views\CloudStorage\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff" />
