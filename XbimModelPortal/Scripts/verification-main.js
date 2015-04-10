@@ -10,11 +10,64 @@
         cobieFile = null;
         dpowFile = null;
 
+        $("#wizard").steps({
+            headerTag: "h3",
+            bodyTag: "section",
+            transitionEffect: "fade",
+            autoFocus: true,
+            enablePagination: false,
+            onStepChanging: function (event, currentIndex, newIndex) {
+                if (newIndex === 3)
+                    //return reportAvailable;
+                    return true;
+                var ext;
+                var exts;
+                if (currentIndex === 0) {
+                    if (!cobieFile) {
+                        $("#form-err-1").text("Select COBie file.");
+                        return false;
+                    }
+                    ext = cobieFile.name.split('.').pop().toLowerCase();
+                    exts = $("#input-cobie-file").attr("accept");
+                    if (exts.indexOf(ext) === -1) {
+                        $("#form-err-1").text("Invalid file extension");
+                        return false;
+                    } else {
+                        $("#form-err-1").text("");
+                        return true;
+                    }
+                }
+                if (currentIndex === 1) {
+                    if (!dpowFile) {
+                        $("#form-err-2").text("Select DPoW file.");
+                        return false;
+                    }
+                    ext = dpowFile.name.split('.').pop().toLowerCase();
+                    exts = $("#input-dpow-file").attr("accept");
+                    if (exts.indexOf(ext) === -1) {
+                        $("#form-err-2").text("Invalid file extension");
+                        return false;
+                    } else {
+                        $("#form-err-2").text("");
+                        return true;
+                    }
+                }
+                return true;
+            },
+            onStepChanged: function (event, currentIndex, priorIndex) {
+                if (currentIndex === 3) {
+                    //init accordion after the tab is visible or it will have a wrong dimensions
+                    $("#semantic-browser-navigation, #semantic-browser-details").accordion({
+                        heightStyle: "fill"
+                    });
+                }
+            }
+        });
+
         //initial GUI
         $("#progress-report-loader").hide(0);
         $("input").button();
         $("button").button();
-        
     }
 
     function initReportTab() {
@@ -80,53 +133,11 @@
         browser.load(url);
     }
 
+
+    
+
     initWizard();
 
-    $("#wizard").steps({
-        headerTag: "h3",
-        bodyTag: "section",
-        transitionEffect: "fade",
-        autoFocus: true,
-        enablePagination: false,
-        onStepChanging: function (event, currentIndex, newIndex) {
-            if(newIndex === 3)
-                //return reportAvailable;
-                return true;
-            var ext;
-            var exts;
-            if (currentIndex === 0) {
-                if (!cobieFile) {
-                    $("#form-err-1").text("Select COBie file.");
-                    return false;
-                }
-                ext = cobieFile.name.split('.').pop().toLowerCase();
-                exts = $("#input-cobie-file").attr("accept");
-                if (exts.indexOf(ext) === -1) {
-                    $("#form-err-1").text("Invalid file extension");
-                    return false;
-                } else {
-                    $("#form-err-1").text("");
-                    return true;
-                }
-            }
-            if (currentIndex === 1) {
-                if (!dpowFile) {
-                    $("#form-err-2").text("Select DPoW file.");
-                    return false;
-                }
-                ext = dpowFile.name.split('.').pop().toLowerCase();
-                exts = $("#input-dpow-file").attr("accept");
-                if (exts.indexOf(ext) === -1) {
-                    $("#form-err-2").text("Invalid file extension");
-                    return false;
-                } else {
-                    $("#form-err-2").text("");
-                    return true;
-                }
-            }
-            return true;
-        }
-    });
    
     //transmit click from proxy buttons to hidden input elements
     $("#btn-cobie-file").click(function() {
@@ -202,9 +213,6 @@
                             current = $("#wizard").steps("getCurrentIndex");
                         }
                         //show structured JSON report
-                        $("#semantic-browser-navigation, #semantic-browser-details").accordion({
-                            heightStyle: "fill"
-                        });
                         initSemanticBrowser("Verification/GetData?model=" + report);
                     });
 

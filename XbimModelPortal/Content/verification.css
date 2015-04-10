@@ -3,7 +3,7 @@
 }
 
 #semantic-browser {
-    height: 50em;
+    height: 30em;
     margin: 2em 0 0 0;
     padding: 0;
     position: relative;
@@ -26,3 +26,37 @@
 .no-overflow{
     overflow:scroll;
 }
+
+.xbim-entity {
+    cursor: default;
+  display: table-cell;
+    -moz-word-break: break-all;
+    -o-word-break: break-all;
+    word-break: break-all;
+}
+
+.xbim-tree li.xbim-tree-leaf {
+  padding-left: 36px;
+}
+
+.xbim-tree li {
+  padding-left: 20px;
+  padding-top: 5px;
+  padding-bottom: 5px;
+}
+
+.xbim-tree ul {
+  margin: 0;
+  padding-left: 0;
+}
+
+.semantic-data {
+  font-size: 70%;
+}
+
+/*-------------- This can change colour of wizard navigation -----------------------*/
+/*.wizard > .steps .current a, .wizard > .steps .current a:hover, .wizard > .steps .current a:active {
+  background: #2184be;
+  color: #fff;
+  cursor: default;
+}*/

@@ -3,9 +3,6 @@
   "WebJobs": [
     {
       "filePath": "../XbimModelPortalWebJob/XbimModelPortalWebJob.csproj"
-    },
-    {
-      "filePath": "../XbimModelPortalCleanUp/XbimModelPortalCleanUp.csproj"
     }
   ]
 }

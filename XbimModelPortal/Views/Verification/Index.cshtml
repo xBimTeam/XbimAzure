@@ -6,6 +6,7 @@
 
 @section Scripts
 {
+    <script src="~/Scripts/xbim-browser.min.js"></script>
     <script src="~/Scripts/verification-main.js"></script>
 }
 
@@ -14,7 +15,7 @@
 <link href="~/Content/verification.css" rel="stylesheet" />
 }
 
-<h3>Select your IFC or COBie file</h3>
+<h3 class="same-length">Select your IFC or COBie file</h3>
 <section>
     <div>
         <div class="form-err" id="form-err-1"></div>
@@ -30,7 +31,7 @@
     </div>
 </section>
 
-<h3>Select DPoW requirements</h3>
+<h3 class="same-length">Select DPoW requirements &nbsp;&nbsp;&nbsp;&nbsp;</h3>
 <section>
     <div>
         <div class="form-err" id="form-err-2"></div>
@@ -46,7 +47,7 @@
     </div>
 </section>
 
-<h3>Run verification</h3>
+<h3 class="same-length">Run verification &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</h3>
 <section>
     <div>
         <p>
@@ -61,7 +62,7 @@
     </div>
 </section>
 
-<h3>Review issues</h3>
+<h3 class="same-length">Review issues &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</h3>
 <section>
     <div>
         <p>
@@ -80,15 +81,15 @@
                 <div id="semantic-browser-navigation">
                     <h3>Project </h3>
                     <div class="no-overflow">
-                        <div id="v-structure" class="semantic-model-tree"></div>
+                        <div id="v-structure" class="semantic-data"></div>
                     </div>
                     <h3>Asset types</h3>
                     <div class="no-overflow">
-                        <div id="v-assetTypes" class="semantic-model-tree"></div>
+                        <div id="v-assetTypes" class="semantic-data"></div>
                     </div>
                     <h3>Documents</h3>
                     <div class="no-overflow">
-                        <div id="v-facility-documents" class="semantic-model-tree"></div>
+                        <div id="v-facility-documents" class="semantic-data"></div>
                     </div>
                 </div>
             </div>
@@ -96,11 +97,11 @@
                 <div id="semantic-browser-details">
                     <h3>Attributes and properties</h3>
                     <div class="no-overflow-y">
-                        <div id="attrprop"></div>
+                        <div id="attrprop" class="semantic-data"></div>
                     </div>
                     <h3>Assignments</h3>
                     <div class="no-overflow-y">
-                        <div id="assignments"></div>
+                        <div id="assignments" class="semantic-data"></div>
                     </div>
                 </div>
                 </div>

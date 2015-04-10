@@ -2,8 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Security;
 using Microsoft.Azure.WebJobs;
 using Microsoft.WindowsAzure.Storage.Blob;
 using Xbim.CobieLiteUK.Validation;
@@ -36,7 +35,7 @@ namespace XbimModelPortalWebJob
                     case ".ifc":
                     case ".ifczip":
                     case ".ifcxml":
-                        facility = GetFacilityFromIfc(input, blobInfo.Extension);
+                        facility = GetFacilityFromIfc(input, blobInfo.Extension, state);
                         break;
                     case ".json":
                         facility = Facility.ReadJson(input);
@@ -85,7 +84,7 @@ namespace XbimModelPortalWebJob
             }
             catch (Exception e)
             {
-                state.WriteLine("Error in processing! <br />" + System.Security.SecurityElement.Escape(e.Message));
+                state.WriteLine("Error in processing! <br />" + SecurityElement.Escape(e.Message));
             }
         }
 
@@ -103,14 +102,13 @@ namespace XbimModelPortalWebJob
                 if (input == null) return;
 
                 Facility facility = null;
-                string msg = null;
-                var log = new StringWriter();
+                string msg;
                 switch (blobInfo.Extension)
                 {
                     case ".ifc":
                     case ".ifczip":
                     case ".ifcxml":
-                        facility = GetFacilityFromIfc(input, blobInfo.Extension);
+                        facility = GetFacilityFromIfc(input, blobInfo.Extension, state);
                         break;
                     case ".json":
                         facility = Facility.ReadJson(input);
@@ -173,18 +171,19 @@ namespace XbimModelPortalWebJob
             }
             catch (Exception e)
             {
-                state.WriteLine("Error in processing! <br />" + System.Security.SecurityElement.Escape(e.Message));
+                state.WriteLine("Error in processing! <br />" + SecurityElement.Escape(e.Message));
             }
 
             
         }
 
-        private static Facility GetFacilityFromIfc(Stream file, string extension)
+        private static Facility GetFacilityFromIfc(Stream file, string extension, CloudBlockBlob state)
         {
+            state.WriteLine("IFC file processing started...");
             var temp = Path.GetTempPath() + Guid.NewGuid() + extension;
             try
             {
-            //store temporarily
+                //store temporarily
                 using (var fileStream = File.OpenWrite(temp))
                 {
                     file.CopyTo(fileStream);
@@ -195,8 +194,10 @@ namespace XbimModelPortalWebJob
                 using (var model = new XbimModel())
                 {
                     model.CreateFrom(temp, null, null, true);
+                    state.WriteLine("IFC file loaded. Converting to COBie model...");
                     var facilities = new List<Facility>();
                     var ifcToCoBieLiteUkExchanger = new IfcToCOBieLiteUkExchanger(model, facilities);
+                    state.WriteLine("IFC converted to COBie model...");
                     return ifcToCoBieLiteUkExchanger.Convert().FirstOrDefault();
                 }
             }
