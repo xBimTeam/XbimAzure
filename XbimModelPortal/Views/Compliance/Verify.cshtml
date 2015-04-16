@@ -1,0 +1,52 @@
+﻿
+@{
+    ViewBag.Title = "Verify";
+    Layout = "~/Views/Shared/_StepByStep.cshtml";
+}
+@section headerstyles{
+}
+<div class="row">
+    <div class="col-md-8 col-md-push-2">
+        <h1>Submission Report</h1>
+        <p>
+            To create a submission report you need to upload two files.
+        </p>
+        <p>
+            The first is the requirements file that has been exported from the BIM Toolkit.
+            <br/>
+            <i class="pull-right">(Click <a href="#">here</a> for instructions on how to create a requirements file.)</i>
+        </p>
+        <p>
+            The second is your submission file, this is a COBie spreadsheet that has been created in your BIM 
+            authoring tool or converted from an IFC file using the BIM Toolkit @Html.ActionLink("IFC to COBie convertor", "Convert").
+            <br />
+            <i class="pull-right">(Click <a href="#">here</a> for instructions on how to create a submission file.)</i>
+        </p>
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-8 col-md-push-2">
+        <div class="input-group">
+            <input type="file" />
+            <input type="text" class="form-control file-button" placeholder="Requirements file..." aria-describedby="basic-addon1">
+            <span class="btn btn-default input-group-addon file-button">Browse</span>
+        </div>
+     </div>
+</div>
+<div class="row">
+    <div class="col-md-8 col-md-push-2">
+        <div class="input-group">
+            <input type="file" />
+            <input type="text" class="form-control file-button" placeholder="Submission file..." aria-describedby="basic-addon1">
+            <span class="btn btn-default input-group-addon file-button">Browse</span>
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-3 col-md-push-2">
+        <button class="btn btn-primary">Create Submission Report</button>
+    </div>
+    <div class="col-md-5 col-md-push-2">
+        <span id="progress-report"></span>
+    </div>
+</div>

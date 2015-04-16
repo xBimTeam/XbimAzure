@@ -1,0 +1,52 @@
+﻿
+@{
+    ViewBag.Title = "Validate";
+    Layout = "~/Views/Shared/_StepByStep.cshtml";
+}
+
+@section footerscripts{
+
+}
+<div class="row">
+    <div class="col-md-8 col-md-push-2">
+        <h1>COBie Compliance Check</h1>
+        <p>
+            To validate the compliance of a COBie file upload either an XLS or XLSX spreadsheet containing the COBie data. 
+        </p>
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-8 col-md-push-2">
+        @*<div class="alert alert-danger" role="alert">
+            <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+            <span class="sr-only">Error:</span>
+            Select a COBie file
+        </div>*@
+        <div class="input-group">
+            <input type="file"/>
+            <input type="text" class="form-control file-button" placeholder="COBie file...">
+            <span class="btn btn-default input-group-addon file-button">Browse</span>
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-3 col-md-push-2">
+        <button class="btn btn-primary">Create Compliance Report</button>
+    </div>
+    <div class="col-md-5 col-md-push-2">
+        <span id="progress-report"></span>
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-8 col-md-push-2">
+        <p>
+            It is sometimes possible to automatically  improve the compliance of your COBie file.
+            Click the improve button to improve the compliance of your COBie file.
+        </p>
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-8 col-md-push-2">
+        <button class="btn btn-primary" disabled="disabled">Get improved COBie</button>
+    </div>
+</div>

@@ -1,0 +1,64 @@
+﻿body {
+    padding-top: 10px;
+    font-size: 20px;
+}
+
+/* Set padding to keep content from hitting the edges */
+.body-content {
+    padding-left: 15px;
+    padding-right: 15px;
+}
+
+/* Override the default bootstrap behavior where horizontal description lists 
+   will truncate terms that are too long to fit in the left column 
+*/
+.dl-horizontal dt {
+    white-space: normal;
+}
+
+/* Set width on the form input elements since they're 100% wide by default */
+.input-group {
+    max-width: 20em;
+}
+
+input.form-control {
+    display: inline-block;
+}
+.row {
+            margin-bottom: 2em;
+        }
+
+.jumbotron h1 {
+    line-height: 1.5;
+}
+
+input[type='file'] {
+    display: none;
+}
+/* Sticky footer styles
+-------------------------------------------------- */
+html {
+  position: relative;
+  min-height: 100%;
+}
+body {
+  /* Margin bottom by footer height */
+  margin-bottom: 30px;
+}
+.footer {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  /* Set the fixed height of the footer here */
+  height: 35px;
+  background-color: #f5f5f5;
+  text-align: center;
+    padding-top: 5px;
+}
+
+.footer p {
+    margin: 0;
+    padding: 0;
+}
+
+

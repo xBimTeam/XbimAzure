@@ -1,0 +1,33 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewBag.Title</title>
+    <link href="~/Content/bootstrap.min.css" rel="stylesheet"/>
+    <link href="~/Content/step-by-step.css" rel="stylesheet"/>
+    @RenderSection("headerstyles", false)
+
+
+    @Scripts.Render("~/bundles/modernizr")
+    @Scripts.Render("~/bundles/jquery")
+    <script src="~/Scripts/jquery.validate.js"></script>
+    <script src="~/Scripts/stepbystep.functions.js"></script>
+    @RenderSection("headerscripts", false)
+</head>
+<body>
+<div class="container body-content">
+    <div class="text-right">
+        <img src="~/Content/img/xBIM_official_icon.png" alt="logo"/>
+    </div>
+    @RenderBody()
+</div>
+
+<footer class="footer">
+    <p>&copy; @DateTime.Now.Year - xBIM Team, Northumbria University</p>
+</footer>
+
+@Scripts.Render("~/bundles/bootstrap")
+@RenderSection("footerscripts", false)
+</body>
+</html>

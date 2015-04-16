@@ -149,6 +149,7 @@
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Controllers\CloudStorageController.cs" />
+    <Compile Include="Controllers\ComplianceController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ModelController.cs" />
     <Compile Include="Controllers\ValidationController.cs" />
@@ -207,6 +208,7 @@
     <Content Include="Content\jquery_ui_styles_start_theme\images\ui-icons_f7a50d_256x240.png" />
     <Content Include="Content\jquery_ui_styles_start_theme\images\ui-icons_fcd113_256x240.png" />
     <Content Include="Content\jquery_ui_styles_start_theme\jquery-ui.css" />
+    <Content Include="Content\step-by-step.css" />
     <Content Include="Content\verification.css" />
     <Content Include="Content\validation.css" />
     <Content Include="Content\wizard.css" />
@@ -246,8 +248,8 @@
     <Content Include="Scripts\respond.js" />
     <Content Include="Scripts\respond.min.js" />
     <Content Include="Scripts\verification-main.js" />
-    <Content Include="Scripts\webgl-utils.min.js" />
     <Content Include="Scripts\validation-main.js" />
+    <Content Include="Scripts\webgl-utils.min.js" />
     <Content Include="Scripts\xbim-browser.js" />
     <Content Include="Scripts\xbim-browser.min.js" />
     <Content Include="Scripts\xbim-services-proxy.js" />
@@ -269,10 +271,16 @@
     <Content Include="Views\Home\About.cshtml" />
     <Content Include="Views\Home\Contact.cshtml" />
     <Content Include="Views\Model\Index.cshtml" />
-    <Content Include="Views\Shared\_LayoutWizard.cshtml" />
+    <Content Include="Views\Shared\_StepByStep.cshtml" />
     <Content Include="Views\Validation\Index.cshtml" />
     <Content Include="Views\Verification\Index.cshtml" />
     <Content Include="Views\Home\Index.cshtml" />
+    <Content Include="Views\Shared\_LayoutWizard.cshtml" />
+    <Content Include="Views\Compliance\Index.cshtml" />
+    <Content Include="Views\Compliance\Convert.cshtml" />
+    <Content Include="Views\Compliance\Validate.cshtml" />
+    <Content Include="Views\Compliance\Verify.cshtml" />
+    <Content Include="Scripts\stepbystep.functions.js" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

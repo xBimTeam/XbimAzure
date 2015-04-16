@@ -1,0 +1,38 @@
+﻿
+@{
+    ViewBag.Title = "xBIM for DPoW";
+    Layout = "~/Views/Shared/_StepByStep.cshtml";
+}
+
+<div class="row jumbotron">
+    <h1>Compliance Step By Step</h1>
+    <div class="col-md-12">
+        <ul>
+            <li>
+                <strong> <a href="https://toolkit.thenbs.com/" target="_blank">Create</a> and download your “Requirements” file</strong>
+            </li>
+            <li>
+                <strong>Create your “Submission” file.</strong> <br />
+                There are three ways to create a COBie submission file
+                <ol>
+                    <li>@Html.ActionLink("Convert", "Convert", null, new { target = "_blank" }) from an IFC 2x3 file using the xBIM Toolkit</li>
+                    <li><a href="#">Author</a> directly in your spreadsheet software</li>
+                    <li><a href="#">Export</a> from you BIM authoring tool</li>
+                </ol>
+                In addition, if you have an IFC 2x3 file you may also <br />
+                @Html.ActionLink("Review", "Review", null, new { target = "_blank" }) the submission against the requirements in 3D
+            </li>
+            <li>
+                <strong>@Html.ActionLink("Validate", "Validate", null, new { target = "_blank" }) the compliance of your COBie file</strong>
+                <br />
+                This finds any errors in the structure of your COBie file (duplicate names, wrong data types etc.)
+            </li>
+            <li>
+                <strong>@Html.ActionLink("Verify", "Verify", null, new { target = "_blank" }) the submission against the requirements.</strong>
+                <br />
+                This checks the values in the requirements file exist in the submission file.
+            </li>
+        </ul>
+    </div>
+</div>
+

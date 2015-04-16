@@ -1,0 +1,33 @@
+﻿@{
+    ViewBag.Title = "Convert";
+    Layout = "~/Views/Shared/_StepByStep.cshtml";
+}
+@section headerstyles{
+}
+<div class="row">
+    <div class="col-md-8 col-md-push-2">
+        <h1>Create COBie Submission file</h1>
+        <p>
+            To create a COBie submission file, upload an IFC 2x3 file and click Create COBie Submission to download the COBie spreadsheet file.
+            <br/>
+            <i class="pull-right">(Click <a href="#">here</a> to see more information on how to create the IFC 2x3 file)</i>
+        </p>
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-8 col-md-push-2">
+        <div class="input-group">
+            <input type="file" />
+            <input type="text" class="form-control file-button" placeholder="IFC 2x3 file..." aria-describedby="basic-addon1">
+            <span class="btn btn-default input-group-addon file-button">Browse</span>
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-3 col-md-push-2">
+        <button class="btn btn-primary">Create COBie Submission</button>
+    </div>
+    <div class="col-md-5 col-md-push-2">
+        <span id="progress-report"></span>
+    </div>
+</div>
