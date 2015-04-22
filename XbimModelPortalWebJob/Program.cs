@@ -22,7 +22,7 @@ namespace XbimModelPortalWebJob
             //limit of retries befor message goes to poisoned queue (default is 5)
             config.Queues.MaxDequeueCount = 3;
             //maximum time to check the queue again if it is empty. (default is 1 minute!)
-            config.Queues.MaxPollingInterval = TimeSpan.FromSeconds(5);
+            config.Queues.MaxPollingInterval = TimeSpan.FromSeconds(2);
             
             //start host with configuration
             var host = new JobHost(config);

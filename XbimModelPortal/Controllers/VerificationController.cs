@@ -31,7 +31,7 @@ namespace XbimModelPortal.Controllers
             var cobieExt = Path.GetExtension(cobie.FileName ?? "").ToLower();
             var cobieAllowed = new[] { ".ifc", ".ifczip", ".ifcxml", ".xls", ".xlsx", ".xml", ".json" };
             var dpowExt = Path.GetExtension(dpow.FileName ?? "").ToLower();
-            var dpowAllowed = new[] { ".xml", ".json" };
+            var dpowAllowed = new[] { ".xml", ".json", ".xls", ".xlsx" };
 
 
             if (!cobieAllowed.Contains(cobieExt) || !dpowAllowed.Contains(dpowExt))

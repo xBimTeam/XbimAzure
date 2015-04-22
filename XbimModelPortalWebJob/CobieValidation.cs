@@ -146,7 +146,7 @@ namespace XbimModelPortalWebJob
            [QueueTrigger("cobieverificationqueue")] XbimCloudModel blobInfo,
            [Blob("images/{ModelId}{Extension}", FileAccess.Read)] Stream input,
            [Blob("images/{ModelId}.requirements{Extension2}", FileAccess.Read)] Stream inputRequirements,
-           [Blob("images/{ModelId}.json")] CloudBlockBlob report,
+           [Blob("images/{ModelId}.report.json")] CloudBlockBlob report,
            [Blob("images/{ModelId}.state")] CloudBlockBlob state,
            [Blob("images/{ModelId}.report.xlsx")] CloudBlockBlob reportXls)
         {
@@ -188,6 +188,12 @@ namespace XbimModelPortalWebJob
                         break;
                     case ".json":
                         requirements = Facility.ReadJson(inputRequirements);
+                        break;
+                    case ".xls":
+                        requirements = Facility.ReadCobie(inputRequirements, ExcelTypeEnum.XLS, out msg);
+                        break;
+                    case ".xlsx":
+                        requirements = Facility.ReadCobie(inputRequirements, ExcelTypeEnum.XLSX, out msg);
                         break;
                 }
 
@@ -241,7 +247,10 @@ namespace XbimModelPortalWebJob
 
                 using (var model = new XbimModel())
                 {
-                    model.CreateFrom(temp, null, null, true);
+                    model.CreateFrom(temp, null, (a, b) =>
+                    {
+                        state.WriteLine("{0} loaded from IFC.", a);
+                    }, true);
                     state.WriteLine("IFC file loaded. Converting to COBie model...");
                     var facilities = new List<Facility>();
                     var ifcToCoBieLiteUkExchanger = new IfcToCOBieLiteUkExchanger(model, facilities);

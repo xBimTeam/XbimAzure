@@ -1,5 +1,4 @@
-﻿
-@{
+﻿@{
     ViewBag.Title = "Validate";
     Layout = "~/Views/Shared/_StepByStep.cshtml";
 }
@@ -10,7 +9,7 @@
             $("#btn-fixed-cobie").attr("disabled", "disabled");
             $("#compliance-area").hide();
             $("#report-message").hide();
-            $("#btn-create").click(function () {
+            $("#btn-create").click(function() {
                 var file = getFile("#cobie-file");
                 if (!file) return;
 
@@ -35,8 +34,8 @@
                             var fixedCobie = response.fixedCobie;
                             var state = response.state;
 
-                            whenReady("Compliance", report, function () {
-                                $.get("/Compliance/GetData?model=" + report, null, function (reportData) {
+                            whenReady("Compliance", report, function() {
+                                $.get("/Compliance/GetData?model=" + report, null, function(reportData) {
                                     if (!reportData || report.length === 0) {
                                         $("#compliant-message").text("Your file is fully compliant to BS1192-4. Congratulations!");
                                         $("#compliance-area").show();
@@ -105,14 +104,14 @@
     <div class="col-md-8 col-md-push-2">
         <h1>COBie Compliance Check</h1>
         <p>
-            To validate the compliance of a COBie file upload either an XLS or XLSX spreadsheet containing the COBie data. 
+            To validate the compliance of a COBie file upload either an XLS or XLSX spreadsheet containing the COBie data.
         </p>
     </div>
 </div>
 <div class="row">
     <div class="col-md-8 col-md-push-2">
         <div class="input-group">
-            <input type="file" id="cobie-file" accept=".ifc,.ifczip,.ifcxml,.xls,.xlsx,.json,.xml" />
+            <input type="file" id="cobie-file" accept=".ifc,.ifczip,.ifcxml,.xls,.xlsx,.json,.xml"/>
             <input type="text" class="form-control file-button" placeholder="COBie file...">
             <span class="btn btn-default input-group-addon file-button">Browse</span>
         </div>
@@ -129,7 +128,7 @@
 <div class="row">
     <div class="col-md-8 col-md-push-2">
         <p>
-            It is sometimes possible to automatically  improve the compliance of your COBie file.
+            It is sometimes possible to automatically improve the compliance of your COBie file.
             Click the improve button to improve the compliance of your COBie file.
         </p>
     </div>
