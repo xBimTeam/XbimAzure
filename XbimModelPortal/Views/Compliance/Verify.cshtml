@@ -3,7 +3,81 @@
     ViewBag.Title = "Verify";
     Layout = "~/Views/Shared/_StepByStep.cshtml";
 }
-@section headerstyles{
+@section headerscripts{
+    <script type="text/javascript">
+        $(document).ready(function() {
+            $(".btn-primary").click(function () {
+                var rFile = getFile("#requirements-file");
+                if (!rFile) return;
+
+                var sFile = getFile("#submission-file");
+                if (!sFile) return;
+
+
+                var form = new FormData();
+                form.append("dpow", rFile);
+                form.append("cobie", sFile);
+                var doReport = true;
+                $.ajax({
+                    url: "/Verification/VerifyCobieFile", //Server script to process data
+                    type: "POST",
+                    xhr: getXHR,
+                    ////Ajax events
+                    //beforeSend: beforeSendHandler,
+                    success: function (data) {
+                        var response = data;
+                        if (typeof (data) == "string")
+                            response = JSON.parse(data);
+
+                        //wait for wexbim and COBieLite files and load them when ready
+                        if (response && response.uploaded) {
+                            reportProgress("Your model has been uploaded and is being processed on the server now...");
+                            var xlsReport = response.xlsReport;
+                            var state = response.state;
+
+                            whenReady("Compliance", xlsReport, function () {
+                                doReport = false;
+                                var name = getFileNameWithoutExtension(sFile) + ".report";
+                                //this will download the file
+                                window.location = "/Compliance/GetData?model=" + xlsReport + "&name=" + encodeURI(name);
+                            });
+
+                            whenReady("Compliance", state, function () {
+                                var reportState = function () {
+                                    $.get("/Compliance/GetData?model=" + state, null, function (stateData) {
+                                        reportProgress(stateData);
+
+                                        //stop reporting if this is an error message
+                                        if (stateData.indexOf("Error") === 0)
+                                            doReport = false;
+                                    });
+                                    if (doReport) setTimeout(reportState, 500); //get the latest state every 0.5s
+                                    else reportProgress(""); //clear the message
+                                }
+                                //start the loop
+                                reportState();
+                            });
+
+                        } else {
+                            reportProgress(response.message);
+                        }
+                    },
+                    error: function (xhr, status, msg) {
+                        reportProgress("Error during AJAX processing: " + msg);
+                        doReport = false;
+                    },
+                    // Form data
+                    data: form,
+                    //Options to tell jQuery not to process data or worry about content-type.
+                    cache: false,
+                    contentType: false,
+                    processData: false
+                });
+
+
+            });
+        });
+    </script>
 }
 <div class="row">
     <div class="col-md-8 col-md-push-2">
@@ -27,7 +101,7 @@
 <div class="row">
     <div class="col-md-8 col-md-push-2">
         <div class="input-group">
-            <input type="file" />
+            <input type="file" accept=".xls,.xlsx,.json,.xml" id="requirements-file"/>
             <input type="text" class="form-control file-button" placeholder="Requirements file..." aria-describedby="basic-addon1">
             <span class="btn btn-default input-group-addon file-button">Browse</span>
         </div>
@@ -36,7 +110,7 @@
 <div class="row">
     <div class="col-md-8 col-md-push-2">
         <div class="input-group">
-            <input type="file" />
+            <input type="file" accept=".xls,.xlsx,.json,.xml,.ifc,.ifczip,.ifcxml" id="submission-file"/>
             <input type="text" class="form-control file-button" placeholder="Submission file..." aria-describedby="basic-addon1">
             <span class="btn btn-default input-group-addon file-button">Browse</span>
         </div>

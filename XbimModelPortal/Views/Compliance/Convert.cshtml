@@ -2,7 +2,76 @@
     ViewBag.Title = "Convert";
     Layout = "~/Views/Shared/_StepByStep.cshtml";
 }
-@section headerstyles{
+@section headerscripts{
+    <script type="text/javascript">
+        $(document).ready(function() {
+            $(".btn-primary").click(function () {
+                var file = getFile("#ifc-file");
+                if (!file) return;
+
+                var data = new FormData();
+                data.append("file", file);
+                var doReport = true;
+                $.ajax({
+                    url: "/Compliance/CreateSubmission", //Server script to process data
+                    type: "POST",
+                    xhr: getXHR,
+                    ////Ajax events
+                    //beforeSend: beforeSendHandler,
+                    success: function (data, status, xhr) {
+                        var response = data;
+                        if (typeof (data) == "string")
+                            response = JSON.parse(data);
+
+                        //wait for wexbim and COBieLite files and load them when ready
+                        if (response && response.uploaded) {
+                            reportProgress("Your model has been uploaded and is being processed on the server now...");
+                            var submission = response.submission;
+                            var state = response.state;
+
+                            whenReady("Compliance", submission, function () {
+                                doReport = false;
+                                var name = getFileNameWithoutExtension(file);
+                                //this will download the file
+                                window.location = "/Compliance/GetData?model=" + submission + "&name=" + encodeURI(name);
+                            });
+
+                            whenReady("Compliance", state, function () {
+                                var reportState = function () {
+                                    $.get("/Compliance/GetData?model=" + state, null, function (stateData, reportStatus) {
+                                        reportProgress(stateData);
+
+                                        //stop reporting if this is an error message
+                                        if (stateData.indexOf("Error") === 0) 
+                                            doReport = false;
+                                    });
+                                    if (doReport) setTimeout(reportState, 500); //get the latest state every 0.5s
+                                    else reportProgress(""); //clear the message
+                                }
+                                //start the loop
+                                reportState();
+                            });
+
+                        } else {
+                            reportProgress(response.message);
+                        }
+                    },
+                    error: function (xhr, status, msg) {
+                        reportProgress("Error during AJAX processing: " + msg);
+                        doReport = false;
+                    },
+                    // Form data
+                    data: data,
+                    //Options to tell jQuery not to process data or worry about content-type.
+                    cache: false,
+                    contentType: false,
+                    processData: false
+                });
+
+
+            });
+        });
+    </script>
 }
 <div class="row">
     <div class="col-md-8 col-md-push-2">
@@ -17,7 +86,7 @@
 <div class="row">
     <div class="col-md-8 col-md-push-2">
         <div class="input-group">
-            <input type="file" />
+            <input type="file" id="ifc-file" accept=".ifc,.ifczip,.ifcxml" />
             <input type="text" class="form-control file-button" placeholder="IFC 2x3 file..." aria-describedby="basic-addon1">
             <span class="btn btn-default input-group-addon file-button">Browse</span>
         </div>

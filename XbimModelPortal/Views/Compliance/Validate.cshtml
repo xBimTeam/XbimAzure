@@ -4,8 +4,102 @@
     Layout = "~/Views/Shared/_StepByStep.cshtml";
 }
 
-@section footerscripts{
+@section headerscripts{
+    <script type="text/javascript">
+        $(document).ready(function() {
+            $("#btn-fixed-cobie").attr("disabled", "disabled");
+            $("#compliance-area").hide();
+            $("#report-message").hide();
+            $("#btn-create").click(function () {
+                var file = getFile("#cobie-file");
+                if (!file) return;
 
+                var data = new FormData();
+                data.append("file", file);
+                var doReport = true;
+                $.ajax({
+                    url: "/Validation/ValidateCobieFile", //Server script to process data
+                    type: "POST",
+                    xhr: getXHR,
+                    ////Ajax events
+                    //beforeSend: beforeSendHandler,
+                    success: function(data) {
+                        var response = data;
+                        if (typeof (data) == "string")
+                            response = JSON.parse(data);
+
+                        //wait for wexbim and COBieLite files and load them when ready
+                        if (response && response.uploaded) {
+                            reportProgress("Your model has been uploaded and is being processed on the server now...");
+                            var report = response.report;
+                            var fixedCobie = response.fixedCobie;
+                            var state = response.state;
+
+                            whenReady("Compliance", report, function () {
+                                $.get("/Compliance/GetData?model=" + report, null, function (reportData) {
+                                    if (!reportData || report.length === 0) {
+                                        $("#compliant-message").text("Your file is fully compliant to BS1192-4. Congratulations!");
+                                        $("#compliance-area").show();
+                                        $("#report-message").text("");
+                                    } else {
+                                        $("#report-message").text(reportData);
+                                        $("#report-message").show();
+                                        $("#compliance-area").hide();
+                                        $("#compliant-message").text("");
+                                        $("html, body").animate({
+                                            scrollTop: $("#report-message").offset().top
+                                        }, 2000);
+                                    }
+                                });
+                            });
+
+                            whenReady("Compliance", fixedCobie, function() {
+                                doReport = false;
+                                $("#btn-fixed-cobie").removeAttr("disabled");
+                                //unbind any old click handlers and assign the one for the latest file
+                                $("#btn-fixed-cobie").unbind("click").click(function() {
+                                    var name = getFileNameWithoutExtension(file) + ".fixed";
+                                    //this will download the file
+                                    window.location = "/Compliance/GetData?model=" + fixedCobie + "&name=" + encodeURI(name);
+                                });
+                            });
+
+                            whenReady("Compliance", state, function() {
+                                var reportState = function() {
+                                    $.get("/Compliance/GetData?model=" + state, null, function(stateData) {
+                                        reportProgress(stateData);
+
+                                        //stop reporting if this is an error message
+                                        if (stateData.indexOf("Error") === 0)
+                                            doReport = false;
+                                    });
+                                    if (doReport) setTimeout(reportState, 500); //get the latest state every 0.5s
+                                    else reportProgress(""); //clear the message
+                                }
+                                //start the loop
+                                reportState();
+                            });
+
+                        } else {
+                            reportProgress(response.message);
+                        }
+                    },
+                    error: function(xhr, status, msg) {
+                        reportProgress("Error during AJAX processing: " + msg);
+                        doReport = false;
+                    },
+                    // Form data
+                    data: data,
+                    //Options to tell jQuery not to process data or worry about content-type.
+                    cache: false,
+                    contentType: false,
+                    processData: false
+                });
+
+
+            });
+        });
+    </script>
 }
 <div class="row">
     <div class="col-md-8 col-md-push-2">
@@ -17,13 +111,8 @@
 </div>
 <div class="row">
     <div class="col-md-8 col-md-push-2">
-        @*<div class="alert alert-danger" role="alert">
-            <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
-            <span class="sr-only">Error:</span>
-            Select a COBie file
-        </div>*@
         <div class="input-group">
-            <input type="file"/>
+            <input type="file" id="cobie-file" accept=".ifc,.ifczip,.ifcxml,.xls,.xlsx,.json,.xml" />
             <input type="text" class="form-control file-button" placeholder="COBie file...">
             <span class="btn btn-default input-group-addon file-button">Browse</span>
         </div>
@@ -31,7 +120,7 @@
 </div>
 <div class="row">
     <div class="col-md-3 col-md-push-2">
-        <button class="btn btn-primary">Create Compliance Report</button>
+        <button class="btn btn-primary" id="btn-create">Create Compliance Report</button>
     </div>
     <div class="col-md-5 col-md-push-2">
         <span id="progress-report"></span>
@@ -47,6 +136,15 @@
 </div>
 <div class="row">
     <div class="col-md-8 col-md-push-2">
-        <button class="btn btn-primary" disabled="disabled">Get improved COBie</button>
+        <button class="btn btn-primary" id="btn-fixed-cobie">Get improved COBie</button>
+    </div>
+</div>
+<div class="row">
+    <pre class="col-md-8 col-md-push-2" id="report-message">
+    </pre>
+</div>
+<div class="row">
+    <div class="col-md-8 col-md-push-2 jumbotron" id="compliance-area">
+        <h1 id="compliant-message"></h1>
     </div>
 </div>

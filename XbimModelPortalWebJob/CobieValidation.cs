@@ -73,7 +73,7 @@ namespace XbimModelPortalWebJob
                     }
                 }
 
-                state.WriteLine("Fixed COBie data model created. Model will be serialized to XLSX according to BS 1192-4.");
+                state.WriteLine("Fixed COBie data model created. Model will be serialized to XLSX in accordance with BS 1192-4.");
                 using (var ms = fixedCobie.OpenWrite())
                 {
                     facility.WriteCobie(ms, ExcelTypeEnum.XLSX, out msg);
@@ -85,6 +85,60 @@ namespace XbimModelPortalWebJob
             catch (Exception e)
             {
                 state.WriteLine("Error in processing! <br />" + SecurityElement.Escape(e.Message));
+            }
+        }
+
+        public static void CreateCobie(
+           [QueueTrigger("cobiecreationqueue")] XbimCloudModel blobInfo,
+           [Blob("images/{ModelId}{Extension}", FileAccess.Read)] Stream input,
+           [Blob("images/{ModelId}.state")] CloudBlockBlob state,
+           [Blob("images/{ModelId}.xlsx")] CloudBlockBlob submission)
+        {
+            try
+            {
+                if (input == null) return;
+
+                Facility facility = null;
+                string msg = null;
+                var log = new StringWriter();
+                switch (blobInfo.Extension.ToLower())
+                {
+                    case ".ifc":
+                    case ".ifczip":
+                    case ".ifcxml":
+                        facility = GetFacilityFromIfc(input, blobInfo.Extension, state);
+                        break;
+                    case ".xls":
+                        facility = Facility.ReadCobie(input, ExcelTypeEnum.XLS, out msg);
+                        break;
+                    case ".xlsx":
+                        facility = Facility.ReadCobie(input, ExcelTypeEnum.XLSX, out msg);
+                        break;
+                }
+
+
+                if (facility == null)
+                {
+                    state.WriteLine("Error: COBie not created.");
+                    return;
+                }
+                state.WriteLine("COBie data parsed. Created computable model.");
+
+                if (msg != null)
+                    log.Write(msg);
+
+                state.WriteLine("COBie data validated. Model will be saved as XLSX according to BS 1192-4.");
+                using (var ms = submission.OpenWrite())
+                {
+                    facility.WriteCobie(ms, ExcelTypeEnum.XLSX, out msg);
+                    submission.Properties.ContentType = ".xlsx";
+                    ms.Close();
+                }
+                state.WriteLine("Processing finished");
+            }
+            catch (Exception e)
+            {
+                state.WriteLine("Error: " + SecurityElement.Escape(e.Message));
             }
         }
 
@@ -153,18 +207,12 @@ namespace XbimModelPortalWebJob
                 state.WriteLine("Structured validation report created. Excel report to be created.");
 
                 var rep = new ExcelValidationReport();
-                var temp = Path.ChangeExtension(Path.GetTempFileName(), ".xlsx");
-
-                try
+                using (var stream = new MemoryStream())
                 {
-                    rep.Create(facility, temp, ExcelValidationReport.SpreadSheetFormat.Xlsx);
-                    reportXls.UploadFromFile(temp, FileMode.Open);
+                    rep.Create(validated, stream, ExcelValidationReport.SpreadSheetFormat.Xlsx);
+                    var data = stream.ToArray();
+                    reportXls.UploadFromByteArray(data, 0, data.Length);
                     state.WriteLine("XLSX validation report created.");
-                }
-                finally
-                {
-                    if (File.Exists(temp))
-                        File.Delete(temp);
                 }
 
                 state.WriteLine("Processing finished.");

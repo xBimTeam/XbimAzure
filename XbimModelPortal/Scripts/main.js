@@ -112,15 +112,8 @@
 
         //load requirements file straight away
         if (typeof (dpowFile) !== "undefined") {
-            rBrowser.load(dpowFile);
-
-            if (typeof (ifcFile) === "undefined") {
-                vBrowser.load(dpowFile);
-                $("#overlay").hide(500, function() {
-                    $("#required-tab-handle").click();
-                });
-                return;
-            }
+            browser.load(dpowFile);
+            return;
         }
 
         if (ifcFile.name.indexOf(".wexbim") !== -1 || ifcFile.name.indexOf(".wexBIM") !== -1) {

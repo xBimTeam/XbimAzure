@@ -1,9 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Configuration;
+﻿using System.Configuration;
 using System.Diagnostics;
 using System.IO;
-using System.Linq;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
@@ -21,11 +18,14 @@ namespace XbimModelPortal.Controllers
         protected static CloudQueue DpowRequestQueue;
         protected static CloudQueue CobieValidationQueue;
         protected static CloudQueue CobieVerificationQueue;
+        protected static CloudQueue CobieCreationQueue;
         protected static CloudBlobContainer ModelsBlobContainer;
 
         static CloudStorageController()
         {
+#if !LOCAL
             InitializeStorage();
+#endif
         }
 
         private static void InitializeStorage()
@@ -52,11 +52,13 @@ namespace XbimModelPortal.Controllers
             DpowRequestQueue = queueClient.GetQueueReference("dpowrequest");
             CobieValidationQueue = queueClient.GetQueueReference("cobievalidationqueue");
             CobieVerificationQueue = queueClient.GetQueueReference("cobieverificationqueue");
-            
+            CobieCreationQueue = queueClient.GetQueueReference("cobiecreationqueue");
+
             ModelRequestQueue.CreateIfNotExists();
             DpowRequestQueue.CreateIfNotExists();
             CobieValidationQueue.CreateIfNotExists();
             CobieVerificationQueue.CreateIfNotExists();
+            CobieCreationQueue.CreateIfNotExists();
         }
 
         protected async Task<CloudBlockBlob> UploadAndSaveBlobAsync(HttpPostedFileBase postedFile, string id)
@@ -72,7 +74,7 @@ namespace XbimModelPortal.Controllers
                 await imageBlob.UploadFromStreamAsync(fileStream);
             }
 
-            Trace.TraceInformation("Uploaded image file to {0}", imageBlob.Uri.ToString());
+            Trace.TraceInformation("Uploaded image file to {0}", imageBlob.Uri);
 
             return imageBlob;
         }
@@ -91,7 +93,7 @@ namespace XbimModelPortal.Controllers
             //check if it is in process
             //check if wexbim file is available
 
-            return Json(new ModelStateResponse()
+            return Json(new ModelStateResponse
             {
                 ModelName = model,
                 State = state
@@ -105,7 +107,7 @@ namespace XbimModelPortal.Controllers
             CloudBlockBlob blockBlob = ModelsBlobContainer.GetBlockBlobReference(model);
 
             if (!blockBlob.Exists())
-                return Json(new ModelStateResponse()
+                return Json(new ModelStateResponse
                 {
                     ModelName = model,
                     State = "NO_MODEL"
