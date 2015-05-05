@@ -224,6 +224,7 @@
     <Content Include="Data\Lakeside_Restaurant_stage6_Validation.DPoW.json" />
     <Content Include="Data\Lakeside_Restaurant_stage6_Delivered.DPoW.json" />
     <Content Include="Data\Lakeside_Restaurant_stage1_Requirements.DPoW.json" />
+    <EmbeddedResource Include="Properties\PublishProfiles\openbim.user" />
     <None Include="Properties\PublishProfiles\openbim.pubxml" />
     <Content Include="Properties\webjobs-list.json" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />

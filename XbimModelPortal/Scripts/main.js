@@ -21,6 +21,14 @@
     //    }
     //    return query_string;
     //}();
+    var viewer;
+
+    function reinitControls() {
+        $("#semantic-model").accordion("refresh");
+        $("#semantic-descriptive-info").accordion("refresh");
+        $("#requirements").accordion("refresh");
+        $("#validation").accordion("refresh");
+    }
 
     function initControls() {
 
@@ -101,6 +109,9 @@
     }
 
     //load button - validate input files (extensions at least), upload files, wait for results, load browsers and the viewer
+    var rBrowser;
+    var browser;
+    var vBrowser;
     $("#uploadButton").on("click", function () {
         $("#dialog-container").hide();
         $("#overlay-shadow").hide();
@@ -112,10 +123,9 @@
 
         //load requirements file straight away
         if (typeof (dpowFile) !== "undefined") {
-            browser.load(dpowFile);
-            return;
+            rBrowser.load(dpowFile);
         }
-
+        
         if (ifcFile.name.indexOf(".wexbim") !== -1 || ifcFile.name.indexOf(".wexBIM") !== -1) {
             viewer.load(ifcFile);
             return;
@@ -142,7 +152,7 @@
             //},
             ////Ajax events
             //beforeSend: beforeSendHandler,
-            success: function (data, status, xhr) {
+            success: function (data) {
                 var response = data;
                 if (typeof (data) == "string")
                     response = JSON.parse(data);
@@ -180,13 +190,6 @@
             processData: false
         });
     });
-
-    function reinitControls() {
-        $("#semantic-model").accordion("refresh");
-        $("#semantic-descriptive-info").accordion("refresh");
-        $("#requirements").accordion("refresh");
-        $("#validation").accordion("refresh");
-    }
     initControls();
     $(window).resize(function () {
         reinitControls();
@@ -194,9 +197,9 @@
 
     var activeSelection = false;
     var activeIds = [];
-    var rBrowser = new xBrowser();
-    var browser = new xBrowser();
-    var vBrowser = new xBrowser();
+    rBrowser = new xBrowser();
+    browser = new xBrowser();
+    vBrowser = new xBrowser();
     browser.on("loaded", function (args) {
         var facility = args.model.facility;
         //render parts
@@ -275,7 +278,7 @@
         browser.on("entityActive", function (args) {
             var isRightPanelClick = false;
             if (args.element) 
-                if ($(args.element).parents("#semantic-descriptive-info").length != 0)
+                if ($(args.element).parents("#semantic-descriptive-info").length !== 0)
                     isRightPanelClick = true;
 
             //set ID for location button
@@ -372,7 +375,7 @@
 
     //viewer set up
     var check = xViewer.check();
-    var viewer = null;
+    viewer = null;
     if (check.noErrors) {
         //alert('WebGL support is OK');
         viewer = new xViewer("viewer-canvas");
