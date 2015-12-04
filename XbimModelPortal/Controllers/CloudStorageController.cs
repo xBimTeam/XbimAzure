@@ -19,6 +19,7 @@ namespace XbimModelPortal.Controllers
         protected static CloudQueue CobieValidationQueue;
         protected static CloudQueue CobieVerificationQueue;
         protected static CloudQueue CobieCreationQueue;
+        protected static CloudQueue ExtractionQueue;
         protected static CloudBlobContainer ModelsBlobContainer;
 
         static CloudStorageController()
@@ -53,12 +54,14 @@ namespace XbimModelPortal.Controllers
             CobieValidationQueue = queueClient.GetQueueReference("cobievalidationqueue");
             CobieVerificationQueue = queueClient.GetQueueReference("cobieverificationqueue");
             CobieCreationQueue = queueClient.GetQueueReference("cobiecreationqueue");
+            ExtractionQueue = queueClient.GetQueueReference("extractionqueue");
 
             ModelRequestQueue.CreateIfNotExists();
             DpowRequestQueue.CreateIfNotExists();
             CobieValidationQueue.CreateIfNotExists();
             CobieVerificationQueue.CreateIfNotExists();
             CobieCreationQueue.CreateIfNotExists();
+            ExtractionQueue.CreateIfNotExists();
         }
 
         protected async Task<CloudBlockBlob> UploadAndSaveBlobAsync(HttpPostedFileBase postedFile, string id)

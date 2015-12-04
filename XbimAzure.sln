@@ -22,6 +22,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "XbimModelPortalWebJob", "Xb
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "XbimModelPortalCleanUp", "XbimModelPortalCleanUp\XbimModelPortalCleanUp.csproj", "{D585BF92-5D5F-40AA-B5B7-9C1227BC7467}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IfcExtraction", "IfcExtraction\IfcExtraction.csproj", "{0455D7A6-B1E7-437A-A5E0-2348F9DE3E96}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -53,6 +55,12 @@ Global
 		{D585BF92-5D5F-40AA-B5B7-9C1227BC7467}.Local_Release|Any CPU.Build.0 = Local_Release|Any CPU
 		{D585BF92-5D5F-40AA-B5B7-9C1227BC7467}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D585BF92-5D5F-40AA-B5B7-9C1227BC7467}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0455D7A6-B1E7-437A-A5E0-2348F9DE3E96}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0455D7A6-B1E7-437A-A5E0-2348F9DE3E96}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0455D7A6-B1E7-437A-A5E0-2348F9DE3E96}.Local_Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0455D7A6-B1E7-437A-A5E0-2348F9DE3E96}.Local_Release|Any CPU.Build.0 = Release|Any CPU
+		{0455D7A6-B1E7-437A-A5E0-2348F9DE3E96}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0455D7A6-B1E7-437A-A5E0-2348F9DE3E96}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

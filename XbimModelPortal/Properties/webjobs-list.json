@@ -3,6 +3,9 @@
   "WebJobs": [
     {
       "filePath": "../XbimModelPortalWebJob/XbimModelPortalWebJob.csproj"
+    },
+    {
+      "filePath": "../IfcExtraction/IfcExtraction.csproj"
     }
   ]
 }

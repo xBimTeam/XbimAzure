@@ -1,0 +1,136 @@
+﻿@{
+    ViewBag.Title = "xBIM Extract";
+    Layout = "~/Views/Shared/_StepByStep.cshtml";
+}
+@section headerscripts{
+    <script type="text/javascript">
+        $(document).ready(function() {
+            $("#btn-extract").click(function() {
+                var file = getFile("#input-file");
+                if (!file) return;
+
+                var data = new FormData();
+                data.append("input", file);
+                data.append("ids", $("#ids").val());
+                data.append("includeGeometry", $("#includeGeometry").prop("checked"));
+                data.append("outFormat", $("#outFormat").val());
+
+                var doReport = true;
+                $.ajax({
+                    url: "/Extraction/Extract", //Server script to process data
+                    type: "POST",
+                    xhr: getXHR,
+                    ////Ajax events
+                    //beforeSend: beforeSendHandler,
+                    success: function(data) {
+                        var response = data;
+                        if (typeof (data) == "string")
+                            response = JSON.parse(data);
+
+                        //wait for file and load it when ready
+                        if (response && response.uploaded) {
+                            reportProgress("Your model has been uploaded and is being processed on the server now...");
+                            var result = response.result;
+                            var state = response.state;
+
+                            whenReady("Extraction", result, function () {
+                                doReport = false;
+                                var name = getFileNameWithoutExtension(file) + ".extracted";
+                                window.location = "/Extraction/GetData?model=" + result + "&name=" + encodeURI(name);
+                            });
+
+                            whenReady("Extraction", state, function () {
+                                var reportState = function() {
+                                    $.get("/Extraction/GetData?model=" + state, null, function (stateData) {
+                                        reportProgress(stateData);
+
+                                        //stop reporting if this is an error message
+                                        if (stateData.indexOf("Error") === 0)
+                                            doReport = false;
+                                    });
+                                    if (doReport) setTimeout(reportState, 500); //get the latest state every 0.5s
+                                    else reportProgress(""); //clear the message
+                                }
+                                //start the loop
+                                reportState();
+                            });
+
+                        } else {
+                            reportProgress(response.message);
+                        }
+                    },
+                    error: function(xhr, status, msg) {
+                        reportProgress("Error during AJAX processing: " + msg);
+                        doReport = false;
+                    },
+                    // Form data
+                    data: data,
+                    //Options to tell jQuery not to process data or worry about content-type.
+                    cache: false,
+                    contentType: false,
+                    processData: false
+                });
+
+
+            });
+        });
+    </script>
+}
+<div class="row">
+    <div class="col-md-8 col-md-push-2">
+        <h1>Extract data from IFC</h1>
+        <p>
+            You can use this service to extract data from your IFC file. This service can proces both <strong>IFC2x3 and IFC4</strong> data.
+            Define IDs of the products from your original IFC file which you want to extract. If you don't define any IDs
+            all products will be extracted.
+        </p>
+        <p>
+            Product will be extracted including its spatial containment, type, properties and other related information. 
+            You can decide whether you want to extract it including geometry or not (consider that geometry takes up to 95% of the file size).
+        </p>
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-8 col-md-push-2">
+        <div class="input-group" style="width: 100%; max-width: none;">
+            <input type="file" id="input-file" accept=".ifc,.ifczip,.ifcxml" />
+            <input type="text" class="form-control file-button" placeholder="Input IFC file...">
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-8 col-md-push-2">
+        <input type="text" class="form-control" placeholder="Product IDs to extract..." id="ids">
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-8 col-md-push-2">
+        <label>
+            Save as
+            <select class="form-control" id="outFormat">
+                <option selected="selected" value=".ifc">IFC</option>
+                <option value=".ifcxml">IFC XML</option>
+            </select>
+        </label>
+        
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-8 col-md-push-2">
+        <div class="checkbox">
+            <label>
+                <input type="checkbox" checked="checked" id="includeGeometry"> Include geometry
+            </label>
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-8 col-md-push-2">
+        <button class="btn btn-primary btn-lg" id="btn-extract">Extract data</button>
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-8 col-md-push-2">
+        <span id="progress-report"></span>
+    </div>
+</div>

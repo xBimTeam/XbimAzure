@@ -18,12 +18,6 @@ namespace XbimModelPortal.Controllers
 {
     public class ValidationController : CloudStorageController
     {
-        // GET: Validation
-        public ActionResult Index()
-        {
-            return View();
-        }
-
         public async Task<ActionResult> ValidateCobieFile(HttpPostedFileBase file)
         {
             if(file == null)

@@ -15,12 +15,6 @@ namespace XbimModelPortal.Controllers
 {
     public class VerificationController : CloudStorageController
     {
-        // GET: Verification
-        public ActionResult Index()
-        {
-            return View();
-        }
-
         [HttpPost]
         public async Task<ActionResult> VerifyCobieFile(HttpPostedFileBase cobie, HttpPostedFileBase dpow)
         {

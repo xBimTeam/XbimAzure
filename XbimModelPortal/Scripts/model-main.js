@@ -405,6 +405,11 @@
         viewer.on("loaded", function () {
             $("#overlay").hide(200);
         });
+
+        var cube = new xNavigationCube();
+        cube.passiveAlpha = 1.0;
+        viewer.addPlugin(cube);
+
         viewer.start();
     }
     else {

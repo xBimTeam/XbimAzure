@@ -1,6 +1,4 @@
 ﻿using System;
-using System.ComponentModel;
-using System.IO;
 
 namespace XbimCloudCommon
 {
@@ -18,6 +16,8 @@ namespace XbimCloudCommon
         public string Extension2 { get; set; }
 
         public bool CreateGeometry { get; set; }
+
+        public string Ids { get; set; }
 
     }
 }
