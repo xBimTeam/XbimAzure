@@ -27,7 +27,7 @@ function whenReady(controller, model, callback) {
 }
 
 function reportProgress(message) {
-    $("#progress-report").text(message);
+    $("#progress-report").html(message);
 }
 
 function getExtension(name) {

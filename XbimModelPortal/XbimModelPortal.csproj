@@ -279,7 +279,7 @@
     <Content Include="Views\Compliance\Validate.cshtml" />
     <Content Include="Views\Compliance\Verify.cshtml" />
     <Content Include="Scripts\stepbystep.functions.js" />
-    <None Include="Views\Extraction\Index.cshtml" />
+    <Content Include="Views\Extraction\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
