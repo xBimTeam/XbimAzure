@@ -1,4 +1,5 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
 using Microsoft.Azure.WebJobs;
 using Microsoft.WindowsAzure.Storage.Blob;
 using XbimCloudCommon;
@@ -13,8 +14,16 @@ namespace IfcExtraction
             [Blob("images/{ModelId}.state")] CloudBlockBlob state,
             [Blob("images/{ModelId}.extracted{Extension2}")] CloudBlockBlob output)
         {
-            var extractor = new Extractor();
-            extractor.ExtractData(blobInfo, input, state, output);
+            try
+            {
+                var extractor = new Extractor();
+                extractor.ExtractData(blobInfo, input, state, output);
+            }
+            catch (Exception e)
+            {
+                state.WriteLine("Error: {0}", e.Message);
+            }
+            
         }
     }
     public static class CloudBlockBlobExtensions

@@ -46,7 +46,10 @@ namespace IfcExtraction
                 if (schema == "IFC4")
                     factory = new Xbim.Ifc4.EntityFactory();
                 if (factory == null)
-                    throw new Exception("Unidentified schema");
+                {
+                    state.WriteLine("Unidentified schema " + schema + ". Only IFC2X3 and IFC4 are supported.");
+                    return;
+                }
 
                 state.WriteLine("Identified schema version: " + schema);
             }
